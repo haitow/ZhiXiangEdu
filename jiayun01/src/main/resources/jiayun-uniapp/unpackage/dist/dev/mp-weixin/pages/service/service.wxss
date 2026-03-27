@@ -1,0 +1,124 @@
+
+.uni-common-mt {
+	width: 50%;
+	margin: 0 auto;
+	font-weight: bold;
+}
+.course-date {
+	display: flex;
+	justify-content: space-around;
+}
+.course-date-item-date {}
+.course-date-item-text {
+	margin: 0.5vh auto;
+	width: 5vh;
+	height: 5vh;
+	text-align: center;
+	line-height: 5vh;
+}
+.selected{
+	background-color: #15CFCF;
+	border-radius: 50%;
+	color: white;
+}
+.selectedText{
+	color: #15CFCF;
+	font-weight: bold;
+}
+.disSelectedText{
+	color: black;
+	font-weight: normal;
+}
+.course-item{
+	background-color: white;
+	width: 90%;
+	margin: 2vh auto;
+	height: 22vh;
+	position: relative;
+}
+.course-item-time{
+	background-image: linear-gradient(to right, #dfdfdf,white);
+	width: 23vh;
+	color: #15CFCF;
+	font-weight: bolder;
+	padding-left: 2vh;
+	position: absolute;
+	top: 0vh;
+	left: 0vh;
+}
+.course-item-image{
+	width: 10vh;
+	height: 10vh;
+	position: absolute;
+	top: 6vh;
+	left: 2vh;
+}
+.course-item-image image{
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+.course-item-title{
+	position: absolute;
+	top: 6vh;
+	left: 15vh;
+}
+.course-item-difficulty{
+	position: absolute;
+	top: 9.2vh;
+	left: 23.5vh;
+}
+.course-item-tags{
+	display: flex;
+	position: absolute;
+	left: 15vh;
+	top: 12vh;
+}
+.course-item-tags-item{
+	border: 0.1vh solid gray;
+	margin-right: 1vh;
+	font-size: 1.5vh;
+	color: #15CFCF;
+	border-radius: 0.4vh;
+	padding: 0.2vh 1vh;
+	border: 1px solid #15CFCF;
+}
+.course-item-tname{
+	position: absolute;
+	top: 9vh;
+	left: 15vh;
+}
+.course-item-price{
+	position: absolute;
+	top: 15vh;
+	left: 15vh;
+	color: red;
+}
+.ensure{
+	 position: absolute;
+	 left: 33vh;
+	 top: 13vh;
+	 background-color: #15CFCF;
+	 width: 16vh;
+	 height: 5vh;
+	 line-height: 5vh;
+	 border-radius: 2vh;
+	 text-align: center;
+	 
+	 color: white;
+}
+.ensure-full{
+	 position: absolute;
+	 left: 33vh;
+	 top: 13vh;
+	 background-color: red;
+	 width: 16vh;
+	 height: 5vh;
+	 line-height: 5vh;
+	 border-radius: 2vh;
+	 text-align: center;
+	 
+	 color: white;
+}
+
+

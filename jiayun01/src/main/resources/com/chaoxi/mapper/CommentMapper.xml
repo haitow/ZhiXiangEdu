@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chaoxi.mapper.CommentMapper">
+
+    <select id="getCommentsByShopId" resultMap="CommentMap">
+        select
+            c.id,c.content,c.create_time,c.storage,u.name,s.shop_name,u.image,s.inventory
+        from user u,comment c,shop s
+        where c.shop_id=s.id
+          and c.user_id=u.id
+          and s.id=#{shopId}
+    </select>
+
+    <resultMap id="CommentMap" type="com.chaoxi.pojo.Comment">
+        <result property="id" column="id"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="shopId" column="shop_id"></result>
+        <result property="content" column="content"></result>
+        <result property="storage" column="storage"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="createUser" column="create_user"></result>
+        <result property="updateUser" column="update_user"></result>
+
+        <association property="shop" javaType="com.chaoxi.pojo.Shop">
+            <result property="shopName" column="shop_name"></result>
+            <result property="inventory" column="inventory"></result>
+            <result property="id" column="id"></result>
+        </association>
+
+        <association property="user" javaType="com.chaoxi.pojo.User">
+            <result property="id" column="id"></result>
+            <result property="name" column="name"></result>
+            <result property="image" column="image"></result>
+        </association>
+    </resultMap>
+</mapper>

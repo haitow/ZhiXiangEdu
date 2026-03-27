@@ -1,0 +1,1 @@
+<view class="container"><view class="notice"><block wx:for="{{noticeList}}" wx:for-item="item" wx:for-index="__i0__"><view class="notice-item"><view class="notice-item-title">{{''+item.title+''}}</view><view class="notice-item-description">{{''+item.description+''}}</view><view class="notice-item-createTime">{{''+item.createTime+''}}</view></view></block></view></view>

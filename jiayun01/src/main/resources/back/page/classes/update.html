@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="../../styles/common.css" />
+    <link rel="stylesheet" href="../../styles/page.css" />
+    <style>
+        .selectInput {
+            position: relative;
+            width: 100%;
+            min-width: 100px;
+        }
+        .selectInput .flavorSelect {
+            position: absolute;
+            width: 100%;
+            padding: 0 10px;
+            border-radius: 3px;
+            border: solid 1px #FF903D;
+            line-height: 30px;
+            text-align: center;
+            background: #fff;
+            top: 50px;
+            z-index: 99;
+        }
+        .selectInput .flavorSelect .items {
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+            line-height: 35px;
+            border-bottom: solid 1px #f4f4f4;
+            color: #666;
+        }
+        .selectInput .flavorSelect .none {
+            font-size: 14px;
+        }
+
+        #food-add-app .uploadImg .el-form-item__label::before{
+            content: '*';
+            color: #F56C6C;
+            margin-right: 4px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="addBrand-container" id="classes-update-app">
+    <div class="container">
+        <el-form ref="ruleForm" :model="ruleForm" :rules="rules" :inline="true" label-width="180px" class="demo-ruleForm">
+            <div>
+                <el-form-item label="课程名称:" prop="name">
+                    <el-input v-model="ruleForm.name" placeholder="请填写课程名" maxlength="20"/>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="课程价格:" prop="price">
+                    <el-input v-model="ruleForm.price" placeholder="请设置课程价格"/>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="上限人数:" prop="people">
+                    <el-input v-model="ruleForm.pmax" placeholder="请设置课程价格"/>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="课程标签:" prop="tags">
+                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="ruleForm.tags" @change="handleCheckedCitiesChange">
+                        <el-checkbox v-for="t in tags" :label="t.name" :key="t">{{t.name}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="开始时间:" prop="startTime">
+                    <el-date-picker v-model="ruleForm.startTime" type="datetime" placeholder="选择开课时间" align="right"
+                                    :picker-options="pickerOptions"
+                                    @change = "startTimeupdate()">
+                    </el-date-picker>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="结束时间:" prop="endTime">
+                    <el-date-picker v-model="ruleForm.endTime"
+                                    type="datetime"
+                                    placeholder="选择结课时间"
+                                    align="right"
+                                    :picker-options="pickerOptions"
+                                    @change = "endTimeupdate()"
+                    >
+                    </el-date-picker>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="教室名:" prop="roomName">
+                    <el-select v-model="ruleForm.roomName" placeholder="请选择">
+                        <el-option v-for="item in rooms" :key="item" :label="item" :value="item">{{item}}</el-option>
+                    </el-select>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="老师名字:" prop="tname">
+                    <el-select v-model="ruleForm.tname" placeholder="请选择">
+                        <el-option v-for="item in teachers" :key="item" :label="item" :value="item">{{item}}</el-option>
+                    </el-select>
+                </el-form-item>
+            </div>
+
+            <div class="address">
+                <el-form-item label="课程描述:" prop="region">
+                    <el-input v-model="ruleForm.description" type="textarea" :rows="3" placeholder="课程卡描述，最长200字" maxlength="200"/>
+                </el-form-item>
+            </div>
+
+
+            <div>
+                <el-button type="primary" @click="selectUser()">查询选择了该课程的用户</el-button>
+            </div>
+            <el-table :data="tableData" stripe class="tableBox">
+<!--                @selection-change="handleSelectionChange"-->
+                <el-table-column type="selection" width="25"></el-table-column>
+                <el-table-column prop="name" label="用户名称"></el-table-column>
+                <el-table-column prop="phone" label="联系方式"></el-table-column>
+
+                <el-table-column label="性别">
+                    <template slot-scope="scope">
+                        {{ String(scope.row.sex) === '0' ? '女' : '男' }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="birthday" label="生日"></el-table-column>
+                <el-table-column prop="type" label="类型"></el-table-column>
+                </el-table-column>
+            </el-table>
+
+
+
+            <div class="subBox address">
+                <el-form-item>
+                    <el-button @click="goBack()">取消</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+                    <el-button v-if="actionType == 'add'" type="primary" class="continue" @click="submitForm('ruleForm','goAnd')">
+                        保存并继续添加课程
+                    </el-button>
+                </el-form-item>
+            </div>
+        </el-form>
+    </div>
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../../plugins/axios/axios.min.js"></script>
+<script src="../../js/request.js"></script>
+<script src="../../js/validate.js"></script>
+<script src="../../js/index.js"></script>
+<script src="../../api/classes.js"></script>
+<script src="../../js/common.js"></script>
+<script>
+    const tagsOptions = ['搏击', '瑜伽', '跳舞'];
+    new Vue({
+        el: '#classes-update-app',
+        data() {
+            return {
+                id: '',
+                tableData : [],
+                restKey: 0,
+                textarea: '',
+                actionType: '',
+                index : 0,
+                radio: '1',
+                inputStyle  : {'flex':1},
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '今天',
+                        onClick(picker) {
+                            picker.$emit('pick', new Date());
+                        }
+                    }, {
+                        text: '昨天',
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24);
+                            picker.$emit('pick', date);
+                        }
+                    }, {
+                        text: '一周前',
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', date);
+                        }
+                    }]
+                },
+                startTime: '',
+                endTime:'',
+                ruleForm  : {
+                    'id': '',
+                    'name': '',
+                    'tname':'',
+                    'tags':['瑜伽'],
+                    'roomName':'',
+                    'startTime':'',
+                    'endTime':'',
+                    'people':'',
+                    'price': '',
+                    'description': '',
+                    'status': true,
+                },
+                mak: false,
+                rooms:['1号教室','2号教室','x号教室'],
+                room: '',
+                teachers:['王老师','x老师'],
+                teacher: '',
+                checkAll:false,
+                tags: tagsOptions,
+                isIndeterminate: true
+            }
+        },
+        computed: {
+            rules () {
+                return {
+                    'name': [
+                        {'required': true, 'message': '请填写名称', 'trigger': 'blur'}
+                    ],
+                    'price': [
+                        {
+                            'required': true,
+                            validator: (rules, value, callback) => {
+                                if (!value) {
+                                    callback(new Error('请填写课程价格'))
+                                } else {
+                                    const reg = /^\d+(\.\d{0,2})?$/;
+                                    if (reg.test(value)) {
+                                        if(value < 10000){
+                                            callback()
+                                        }else{
+                                            callback(new Error('价格小于10000'))
+                                        }
+                                    } else {
+                                        callback(new Error('价格格式只能为数字,且最多保留两位小数'))
+                                    }
+                                }
+                            },
+                            'trigger': 'blur'
+                        }
+                    ],
+                }
+            }
+        },
+        created() {
+            //和修改相关
+            this.id = requestUrlParam('id');
+            this.actionType = this.id ? 'edit' : 'add';
+            if (this.id) {
+                this.init()
+            }
+        },
+        mounted() {
+        },
+        methods: {
+            endTimeupdate(){
+                var t = dateFormat("yyyy-MM-dd HH:mm:ss",this.ruleForm.endTime)
+                console.log(t)
+                this.ruleForm.endTime = t
+            },
+            startTimeupdate(){
+                var t = dateFormat("yyyy-MM-dd HH:mm:ss",this.ruleForm.startTime)
+                console.log(t)
+                this.ruleForm.startTime = t
+            },
+            async init () {
+                var _this = this
+                getAllTagsName().then(res=>{
+                    _this.tags = res.data
+                    console.log(_this.tags)
+                })
+                getAllRoomName().then(res=>{
+                    _this.rooms = res.data
+                    console.log(_this.rooms)
+                })
+                getAllTeacherName().then(res=>{
+                    _this.teachers = res.data
+                    console.log(_this.teachers)
+                })
+
+                queryClassesById(this.id).then(res => {
+                    console.log(res);
+                    if (String(res.code) === '1') {
+                        this.ruleForm = { ...res.data };
+                        console.log(_this.ruleForm)
+                        this.ruleForm.status = res.data.status == '1'
+                        this.imageUrl = `/common/download?name=${res.data.image}`
+                        console.log("22222222222222222")
+                        var arr = res.data.tags   //搏击,瑜伽  ->  ['搏击', '瑜伽',]
+                        var split = arr.split(",");
+                        // console.log(split)
+                        this.ruleForm.tags = split
+                        // console.log(arr)
+                        // console.log(this.ruleForm.tags)
+                    } else {
+                        this.$message.error(res.msg || '操作失败')
+                    }
+                })
+            },
+            selectUser(){
+                getByIdWithUserClasses(this.id).then(res => {//请求结果处理
+                    if (String(res.code) === '1') {
+                        this.tableData = res.data
+                    }else{
+                        this.$message.error(res.msg)
+                    }
+                })
+            },
+            submitForm(formName, st) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        let params = {...this.ruleForm};
+                        params.status = this.ruleForm ? 1 : 0;
+                        delete params.updateTime;
+                        console.log("11111111111111111111111111111")
+                        params.tags = JSON.stringify(params.tags)
+                        params.tags = params.tags.replaceAll("\"","")
+                        params.tags = params.tags.replaceAll("[","")
+                        params.tags = params.tags.replaceAll("]","")
+                        console.log(params.tags)
+                        console.log("11111111111111111111111111111")
+                        editClasses(params).then(res => {
+                            if (res.code === 1) {
+                                this.$message.success('课程修改成功！');
+                                this.goBack()
+                            } else {
+                                this.$message.error(res.msg || '操作失败')
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            },
+            handleCheckAllChange(val) {
+                this.ruleForm.tags = val ? tagsOptions : []
+                this.isIndeterminate = false;
+                console.log(this.ruleForm.tags)
+
+            },
+            handleCheckedCitiesChange(value) {
+                let checkedCount = value.length;
+                this.checkAll = checkedCount === this.tags.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < this.tags.length;
+                this.ruleForm.tags = value
+                console.log(this.ruleForm.tags)
+            },
+
+            goBack(){
+                window.parent.menuHandle({
+                    id: '4',
+                    url: '/back/page/classes/list.html',
+                    name: '课程管理'
+                },false)
+            }
+        }
+    })
+</script>
+</body>
+</html>

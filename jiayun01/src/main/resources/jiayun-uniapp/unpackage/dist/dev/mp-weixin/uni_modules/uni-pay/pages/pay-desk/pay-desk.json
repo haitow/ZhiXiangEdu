@@ -1,0 +1,9 @@
+{
+  "backgroundColor": "#F8F8F8",
+  "navigationBarTitleText": "收银台",
+  "usingComponents": {
+    "uni-list": "/uni_modules/uni-list/components/uni-list/uni-list",
+    "uni-list-item": "/uni_modules/uni-list/components/uni-list-item/uni-list-item",
+    "uni-pay": "/uni_modules/uni-pay/components/uni-pay/uni-pay"
+  }
+}

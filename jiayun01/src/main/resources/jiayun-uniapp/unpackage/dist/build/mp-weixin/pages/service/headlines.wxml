@@ -1,0 +1,1 @@
+<view><view class="container"><view class="headlines"><block wx:for="{{news}}" wx:for-item="item" wx:for-index="__i0__"><view class="headlines-item"><view class="headlines-item-title">{{''+item.title+''}}</view><view class="headline-item-description">{{''+item.description+''}}</view><image src="{{item.imgSrc}}"></image></view></block></view></view></view>

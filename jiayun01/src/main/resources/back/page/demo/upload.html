@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件上传</title>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+  <link rel="stylesheet" href="../../styles/common.css" />
+  <link rel="stylesheet" href="../../styles/page.css" />
+</head>
+<body>
+   <div class="addBrand-container" id="food-add-app">
+<!--    <div class="container">-->
+<!--        &lt;!&ndash;-->
+<!--        action： 图片上传网址-->
+<!--        how-file-list：多文件上传-->
+<!--        on-success：成功的回调函数-->
+<!--        before-upload：在上传之前。文件类型-->
+<!--        &ndash;&gt;-->
+<!--        <el-upload class="avatar-uploader"-->
+<!--                action="/common/upload"-->
+<!--                :show-file-list="false"-->
+<!--                :on-success="handleAvatarSuccess"-->
+<!--                :before-upload="beforeUpload"-->
+<!--                ref="upload">-->
+<!--            &lt;!&ndash;-->
+<!--            img 回显之后的图片显示-->
+<!--            :src: 图片的路径-->
+<!--            alt:图片加载失败的回显-->
+<!--            &ndash;&gt;-->
+<!--            <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="加载失败"/>-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--        </el-upload>-->
+<!--    </div>-->
+
+<!--       <div v-if="type1=='次卡'">woshi yige 输入框</div>-->
+
+       <template>
+           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+           <div style="margin: 15px 0;"></div>
+           <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+               <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+           </el-checkbox-group>
+       </template>
+  </div>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="../../plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../plugins/element-ui/index.js"></script>
+    <!-- 引入axios -->
+    <script src="../../plugins/axios/axios.min.js"></script>
+    <script src="../../js/index.js"></script>
+    <script>
+      new Vue({
+        el: '#food-add-app',
+        data() {
+          return {
+            //   type1:"次卡",//次卡  期限
+            // imageUrl: '',
+              checkAll: false,
+              checkedCities: ['上海', '北京'],
+              cities: ['上海', '北京','济南',"华山"],
+              isIndeterminate: true
+          }
+        },
+        methods: {
+            handleCheckAllChange(val) {
+                this.checkedCities = val ? this.tags : [];
+                this.isIndeterminate = false;
+            },
+            handleCheckedCitiesChange(value) {
+                let checkedCount = value.length;
+                this.checkAll = checkedCount === this.cities.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+            },
+            /*文件回显*/
+          handleAvatarSuccess (response, file, fileList) {
+              //
+              this.imageUrl = `/common/download?name=${response.data}`
+          },
+            /*文件上传*/
+          beforeUpload (file) {
+            if(file){
+              const suffix = file.name.split('.')[1];//截取后缀名
+              const size = file.size / 1024 / 1024 < 2;//文件大小计算
+              if(['png','jpeg','jpg'].indexOf(suffix) < 0){
+                this.$message.error('上传图片只支持 png、jpeg、jpg 格式！');
+                this.$refs.upload.clearFiles();
+                return false;
+              }
+              if(!size){
+                this.$message.error('上传文件大小不能超过 2MB!');
+                return false;
+              }
+              return file;
+            }
+          }
+        }
+      })
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+
+.content{
+	display: flex;
+	
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.album{
+}
+.album-item{
+	display: flex;
+	margin: 3vh auto;
+	width: 100%;
+	position: relative;
+}
+.album-item image{
+	border-radius: 3vh;
+}
+.album-item text{
+	position: absolute;
+}
+.album-item-count{
+	
+	position: absolute;
+	height: 3vh;
+	background-color: #435963;
+	border-radius: 5vh;
+	width: 9vh;
+	padding-left: 1.5vh;
+	box-sizing: content-box;
+	padding-top: 0.5vh;
+	top: 10%;
+	right: 3vh;
+	z-index: 2;
+	color: white;
+}
+.album-item-count-text{
+	top: 10%;
+	right: 1.8vh;
+	font-size: 2vh;
+}
+.album-item-title{
+	background-color: white;
+	width: 14vh;
+	text-align: center;
+	border-radius: 3vh;
+	color: black;
+	font-weight: bold;
+	top: 80%;
+	left: 2vh;
+}
+

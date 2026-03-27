@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件上传</title>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+  <link rel="stylesheet" href="../../styles/common.css" />
+  <link rel="stylesheet" href="../../styles/page.css" />
+</head>
+<body>
+   <div class="addBrand-container" id="user-add-app">
+    <div class="container">
+        <!--
+        action:提交的网址
+        show-file-list：是否是多文件上传
+        on-success：成功上传之后触发的函数
+        before-upload：上传之前 过滤操作
+        -->
+        <!--
+            img 回显图片
+            src： 图片路径。  相对路径、网络路径、2进制流文件
+            i: logo
+        -->
+        <el-upload class="avatar-uploader"
+                action="/common/upload"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeUpload"
+                ref="upload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar"></img>
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+    </div>
+  </div>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="../../plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../plugins/element-ui/index.js"></script>
+    <!-- 引入axios -->
+    <script src="../../plugins/axios/axios.min.js"></script>
+    <script src="../../js/index.js"></script>
+    <script>
+      new Vue({
+        el: '#user-add-app',
+        data() {
+          return {
+            imageUrl: ''
+          }
+        },
+        methods: {
+          handleAvatarSuccess (response, file, fileList) {
+              this.imageUrl = `/common/download?name=${response.data}`
+          },
+          beforeUpload (file) {
+            if(file){
+              const suffix = file.name.split('.')[1]
+              const size = file.size / 1024 / 1024 < 2
+              if(['png','jpeg','jpg'].indexOf(suffix) < 0){
+                this.$message.error('上传图片只支持 png、jpeg、jpg 格式！')
+                this.$refs.upload.clearFiles()
+                return false
+              }
+              if(!size){
+                this.$message.error('上传文件大小不能超过 2MB!')
+                return false
+              }
+              return file
+            }
+          }
+        }
+      })
+    </script>
+</body>
+</html>

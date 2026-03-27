@@ -1,0 +1,341 @@
+@charset "UTF-8";
+/* 水平间距 */
+/* 水平间距 */
+page {
+  background-color: #F8FAFC;
+}
+.card-detail-container {
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+.header-section {
+  position: relative;
+  margin-bottom: 24rpx;
+}
+.header-bg {
+  height: 200rpx;
+  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+}
+.header-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32rpx;
+  margin-top: -160rpx;
+}
+.back-btn {
+  position: absolute;
+  left: 32rpx;
+  width: 64rpx;
+  height: 64rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.back-icon {
+  font-size: 40rpx;
+  color: #fff;
+}
+.header-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #fff;
+}
+.main-content {
+  padding: 0 24rpx;
+}
+.card-preview {
+  position: relative;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(59, 130, 246, 0.2);
+  margin-bottom: 24rpx;
+}
+.card-image {
+  width: 100%;
+  height: 360rpx;
+}
+.card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 32rpx;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+}
+.card-badge {
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+.card-name {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 12rpx;
+}
+.card-price-row {
+  display: flex;
+  align-items: baseline;
+}
+.price-symbol {
+  font-size: 28rpx;
+  color: #F97316;
+  font-weight: 600;
+}
+.price-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #F97316;
+}
+.info-section, .course-section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+}
+.title-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1E293B;
+}
+.title-line {
+  width: 6rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, #3B82F6 0%, #10B981 100%);
+  border-radius: 3rpx;
+  margin-left: 16rpx;
+}
+.course-count {
+  font-size: 26rpx;
+  color: #64748B;
+}
+.info-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+.info-item {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F1F5F9;
+}
+.info-item.full-width {
+  width: 100%;
+}
+.info-label {
+  font-size: 26rpx;
+  color: #64748B;
+  margin-bottom: 8rpx;
+}
+.info-value {
+  font-size: 30rpx;
+  color: #1E293B;
+  font-weight: 500;
+}
+.status-tag {
+  display: inline-block;
+  padding: 6rpx 16rpx;
+  border-radius: 6rpx;
+  font-size: 24rpx;
+  background: #FEE2E2;
+  color: #EF4444;
+}
+.status-tag.active {
+  background: #DCFCE7;
+  color: #10B981;
+}
+.info-desc {
+  font-size: 28rpx;
+  color: #1E293B;
+  line-height: 1.6;
+}
+.course-list {
+  display: flex;
+  flex-direction: column;
+}
+.course-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #F1F5F9;
+}
+.course-item:last-child {
+  border-bottom: none;
+}
+.course-index {
+  width: 48rpx;
+  height: 48rpx;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #3B82F6;
+  font-weight: 600;
+  margin-right: 20rpx;
+}
+.course-name {
+  font-size: 28rpx;
+  color: #1E293B;
+}
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+.consult-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 32rpx;
+  margin-right: 20rpx;
+}
+.btn-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-bottom: 4rpx;
+}
+.consult-btn text {
+  font-size: 24rpx;
+  color: #64748B;
+}
+.buy-btn {
+  flex: 1;
+  height: 88rpx;
+  background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(249, 115, 22, 0.35);
+}
+.buy-btn text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+}
+.popup-container {
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  overflow: hidden;
+}
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx;
+  border-bottom: 1rpx solid #F1F5F9;
+}
+.popup-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1E293B;
+}
+.popup-close {
+  font-size: 48rpx;
+  color: #94A3B8;
+  line-height: 1;
+}
+.popup-content {
+  padding: 24rpx 32rpx;
+}
+.pay-option {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F1F5F9;
+}
+.pay-option:last-child {
+  border-bottom: none;
+}
+.pay-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 20rpx;
+}
+.pay-name {
+  flex: 1;
+  font-size: 30rpx;
+  color: #1E293B;
+}
+.pay-arrow {
+  font-size: 36rpx;
+  color: #CBD5E1;
+}
+.admin-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #F1F5F9;
+}
+.admin-item:last-child {
+  border-bottom: none;
+}
+.admin-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+.admin-avatar text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+}
+.admin-info {
+  flex: 1;
+}
+.admin-name {
+  display: block;
+  font-size: 30rpx;
+  color: #1E293B;
+  font-weight: 500;
+  margin-bottom: 4rpx;
+}
+.admin-phone {
+  font-size: 26rpx;
+  color: #64748B;
+}
+.call-btn {
+  padding: 12rpx 24rpx;
+  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+  border-radius: 8rpx;
+}
+.call-btn text {
+  font-size: 26rpx;
+  color: #fff;
+}

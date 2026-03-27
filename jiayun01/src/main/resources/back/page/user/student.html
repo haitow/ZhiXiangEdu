@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="../../styles/common.css" />
+    <link rel="stylesheet" href="../../styles/page.css" />
+    <style>
+        .selectInput {
+            position: relative;
+            width: 100%;
+            min-width: 100px;
+        }
+        .selectInput .flavorSelect {
+            position: absolute;
+            width: 100%;
+            padding: 0 10px;
+            border-radius: 3px;
+            border: solid 1px #00FA9A;
+            line-height: 30px;
+            text-align: center;
+            background: #fff;
+            top: 50px;
+            z-index: 99;
+        }
+        .selectInput .flavorSelect .items {
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+            line-height: 35px;
+            border-bottom: solid 1px #f4f4f4;
+            color: #666;
+        }
+        .selectInput .flavorSelect .none {
+            font-size: 14px;
+        }
+
+        #student-app .uploadImg .el-form-item__label::before{
+            content: '*';
+            color: #00FA9A;
+            margin-right: 4px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="addBrand-container" id="student-app">
+    <div class="container">
+        <el-form ref="ruleForm" :model="ruleForm" :inline="true" label-width="180px" class="demo-ruleForm">
+            <div>
+                <el-form-item label="会员名字:" prop="name">
+                    <el-input v-model="ruleForm.name" placeholder="请填写会员名字" maxlength="20"/>
+                </el-form-item>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <el-form-item label="头像:" prop="region" class="uploadImg">
+                            <el-upload class="avatar-uploader" action="/common/upload" :show-file-list="false" :on-success="handleAvatarSuccess" :on-change="onChange" ref="upload">
+                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </el-form-item>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <el-form-item label="会员性别:" prop="sex">
+                    <el-input v-model="ruleForm.sex" placeholder="请填写会员性别" maxlength="20"/>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="会员电话:" prop="phone">
+                    <el-input v-model="ruleForm.phone" placeholder="请填写会员电话" maxlength="20"/>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="会员身份证号:" prop="idNumber">
+                    <el-input v-model="ruleForm.idNumber" placeholder="请填写会员身份证号" maxlength="20"/>
+                </el-form-item>
+            </div>
+            <div>
+                <el-form-item label="会员生日:" prop="birthday">
+                    <el-date-picker v-model="ruleForm.birthday" type="date" placeholder="选择日期"
+                                    @change = "timeupdate()">
+                    </el-date-picker>
+                </el-form-item>
+            </div>
+
+
+            <div>
+                <el-button type="primary" @click="openCard">查看该会员的所有会员卡</el-button>
+            </div>
+            <el-table :data="tableData1" stripe class="tableBox" >
+<!--                <el-table-column type="selection" width="25"></el-table-column>-->
+                <el-table-column prop="cardName" label="会员卡名"></el-table-column>
+                <el-table-column prop="tags" label="标签名称"></el-table-column>
+                <el-table-column prop="type" label="会员卡类型"></el-table-column>
+                <el-table-column prop="count" label="剩余次数"></el-table-column>
+                <el-table-column prop="endDate" label="过期时间"></el-table-column>
+            </el-table>
+
+
+            <div>
+                <el-button type="primary" @click="selectCard">为该会员选择会员卡 </el-button>
+            </div>
+            <el-table :data="tableData2" stripe class="tableBox">
+                <el-table-column prop="name" label="会员卡名称"></el-table-column>
+                <el-table-column prop="image" label="图片" align="center">
+                    <template slot-scope="{ row }">
+                        <el-image style="width: auto; height: 40px; border:none;cursor: pointer;" :src="getImage(row.image)" :preview-src-list="[ `/common/download?name=${row.image}` ]" >
+                            <div slot="error" class="image-slot">
+                                <img src="../../images/noImg.png" style="width: auto; height: 40px; border:none;" >
+                            </div>
+                        </el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="type" label="会员卡类型"></el-table-column>
+                <el-table-column label="原价">
+                    <template slot-scope="scope">
+                        <span style="margin-right: 10px;">￥{{ scope.row.oldPrice }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="售价">
+                    <template slot-scope="scope">
+                        <span style="margin-right: 10px;">￥{{ scope.row.price }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="count" label="使用次数"></el-table-column>
+                <el-table-column prop="day" label="有效天数"></el-table-column>
+                <el-table-column prop="tags" label="标签"></el-table-column>
+                <el-table-column label="售卖状态">
+                    <template slot-scope="scope">
+                        <span style="margin-right: 10px;">{{ scope.row.status == '0' ? '停售' : '启售' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="updateTime" label="最后操作时间">
+                </el-table-column>
+                <el-table-column label="操作" width="160" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="text" size="small" class="blueBug" @click="saveCard(scope.row.id,scope.row.name)">选择此卡</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination
+                    class="pageList"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="counts"
+                    @size-change="handleSizeChange"
+                    :current-page.sync="page"
+                    @current-change="handleCurrentChange"
+            ></el-pagination>
+
+
+            <div>
+                <el-button type="primary" @click="selectClasses">查看该会员的全部课程 </el-button>
+            </div>
+            <el-table :data="tableData3" stripe class="tableBox">
+                <el-table-column prop="name" label="课程名称"></el-table-column>
+                <el-table-column prop="tname" label="老师名字"></el-table-column>
+                <el-table-column prop="tags" label="标签名称"></el-table-column>
+                <el-table-column prop="roomName" label="教室名称"></el-table-column>
+                <el-table-column label="状态">
+                    <template slot-scope="scope">
+                        <span style="margin-right: 10px;">{{ scope.row.status == '0' ? '停用' : '启用' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="pnum" label="已选人数"></el-table-column>
+                <el-table-column prop="pmax" label="上限人数"></el-table-column>
+            </el-table>
+
+
+            <div class="subBox address">
+                <el-form-item>
+                    <el-button @click="goBack()">取消</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+                </el-form-item>
+            </div>
+        </el-form>
+    </div>
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../../plugins/axios/axios.min.js"></script>
+<script src="../../js/request.js"></script>
+<script src="../../js/validate.js"></script>
+<script src="../../js/index.js"></script>
+<script src="../../api/users.js"></script>
+<script src="../../js/common.js"></script>
+<script>
+    new Vue({
+        el: '#student-app',
+        data() {
+            return {
+                id: '',
+                value1:'',
+                imageUrl: '',
+                tableData1 : [],
+                tableData2 : [],
+                tableData3 : [],
+                checkList: [],
+                page: 1,
+                pageSize: 10,
+                counts: 0,
+                ruleForm  : {
+                    'id': '',
+                    'name': '',
+                    'birthday':'',
+                    'sex':'',
+                    'phone':'',
+                    'idNumber':'',
+                    'image':''
+                },
+                mak: false,
+            }
+        },
+        mounted() {
+        },
+        created() {
+            //和修改相关
+            this.id = requestUrlParam('id');
+            this.actionType = this.id ? 'edit' : 'add';
+            if (this.id) {
+                this.init()
+            }
+        },
+        methods: {
+            async init () {
+                queryUserById(this.id).then(res => {
+                    console.log(res);
+                    if (String(res.code) === '1') {
+                        this.ruleForm = { ...res.data };
+                        this.ruleForm.status = res.data.status == '1'
+                        this.imageUrl = `/common/download?name=${res.data.image}`
+                    } else {
+                        this.$message.error(res.msg || '操作失败')
+                    }
+                    if (String(res.code) === '1') {
+                        // console.log(res.data);
+                        this.ruleForm = res.data;
+                        this.ruleForm.sex = res.data.sex === '0' ? '女' : '男'
+                        // this.ruleForm.password = ''
+                    } else {
+                        this.$message.error(res.msg || '操作失败')
+                    }
+                })
+            },
+            timeupdate(){
+                var t = dateFormat("yyyy-MM-dd",this.ruleForm.birthday)
+                console.log(t)
+                this.ruleForm.birthday = t
+            },
+            //查看该会员的所有会员卡
+            openCard(){
+                getByIdWithCard(this.id).then(res => {//请求结果处理
+                    if (String(res.code) === '1') {
+                        this.tableData1 = res.data
+                    }else{
+                        this.$message.error(res.msg)
+                    }
+                })
+            },
+            //分页查询全部card的信息
+            async selectCard() {
+                const params = {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    name: this.input ? this.input : undefined
+                };
+                await getCardPage(params).then(res => {
+                    if (String(res.code) === '1') {
+                        this.tableData2 = res.data.records || [];
+                        console.log(this.tableData2)
+                        this.counts=res.data.total
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            //为该会员选择会员卡
+            saveCard(id,name){
+                console.log(id,name)
+                var _this = this
+                var params = {
+                    id:this.ruleForm.id,
+                    name:this.ruleForm.name
+                }
+                this.$confirm("是否给该会员添加"+name+"?").then(res=>{
+                    saveByIdWithCard(id,params).then(res=>{
+                        _this.$message.success("会员添加"+name+"选择成功")
+                        _this.openCard()
+                    })
+                }).catch(err=>{
+                    _this.$message("取消选卡")
+                })
+
+            },
+            //查看该会员的全部课程
+            selectClasses(){
+                getByIdWithClasses2(this.id).then(res => {//请求结果处理
+                    if (String(res.code) === '1') {
+                        console.log("****************")
+                        console.log(res)
+                        this.tableData3 = res.data
+                    }else{
+                        this.$message.error(res.msg)
+                    }
+                })
+            },
+            submitForm(formName, st) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        const params = {
+                            ...this.ruleForm,
+                            sex: this.ruleForm.sex === '女' ? '0' : '1'
+                        };
+                        params.status = this.ruleForm ? 1 : 0;
+                        delete params.updateTime;
+                        editStudent(params).then(res => {
+                            if (res.code === 1) {
+                                this.$message.success('会员修改成功！');
+                                this.goBack()
+                            } else {
+                                this.$message.error(res.msg || '操作失败')
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            },
+            handleAvatarSuccess (response, file, fileList) {
+                // 拼接down接口预览
+                if(response.code === 0 && response.msg === '未登录'){
+                    window.top.location.href = '../login/login.html'
+                }else{
+                    this.imageUrl = `/common/download?name=${response.data}`;
+                    this.ruleForm.image = response.data
+                }
+            },
+            onChange (file) {
+                if(file){
+                    const suffix = file.name.split('.')[1];
+                    const size = file.size / 1024 / 1024 < 2;
+                    if(['png','jpeg','jpg'].indexOf(suffix) < 0){
+                        this.$message.error('上传图片只支持 png、jpeg、jpg 格式！');
+                        this.$refs.upload.clearFiles();
+                        return false
+                    }
+                    if(!size){
+                        this.$message.error('上传文件大小不能超过 2MB!');
+                        return false
+                    }
+                    return file
+                }
+            },
+            goBack(){
+                window.parent.menuHandle({
+                    id: '5',
+                    url: '/back/page/user/list.html',
+                    name: '用户管理'
+                },false)
+            },
+
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            getImage (image) {
+                return `/common/download?name=${image}`
+            },
+            // 全部操作
+            handleSelectionChange (val){
+                let checkArr = [];
+                val.forEach((n) => {
+                    checkArr.push(n.id)
+                });
+                this.checkList = checkArr
+            },
+            handleSizeChange (val) {
+                this.pageSize = val;
+                this.init()
+            },
+            handleCurrentChange (val) {
+                this.page = val;
+                this.init()
+            },
+
+        }
+    })
+</script>
+</body>
+</html>

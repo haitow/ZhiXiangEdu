@@ -1,0 +1,85 @@
+#指定环境
+spring:
+  profiles:
+    active: dev
+---
+server:
+  port: 8082
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  application:
+  name: chaoxi-gym
+  datasource:
+    url: jdbc:mysql:///jiayun?useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234
+    type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    redis:
+      port: 6379
+      host: localhost
+
+mybatis-plus:
+  configuration:
+    #address_book ---> AddressBook
+    map-underscore-to-camel-case: true
+    #日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+
+minio:
+  #  endpoint: 169.254.53.145
+  endpoint: 127.0.0.1
+  port: 9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  secure: false
+  bucketName: "jiayun-all"
+  downloadDir: "/data/img"
+
+---
+server:
+  port: 8081
+spring:
+  config:
+    activate:
+      on-profile: pro
+
+  application:
+  name: jiayun
+  datasource:
+    url: jdbc:mysql://192.168.138.50:3306/jiayun?useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Gaohe_123
+    type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    redis:
+      port: 6379
+      host: 192.168.138.50
+
+mybatis-plus:
+  configuration:
+    #address_book ---> AddressBook
+    map-underscore-to-camel-case: true
+    #日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+
+minio:
+  #  endpoint: 169.254.53.145
+  endpoint: 192.168.138.50
+  port: 9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  secure: false
+  bucketName: "jiayun-all"
+  downloadDir: "/data/img"

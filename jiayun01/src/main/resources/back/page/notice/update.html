@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="../../styles/common.css" />
+    <link rel="stylesheet" href="../../styles/page.css" />
+    <style>
+        .selectInput {
+            position: relative;
+            width: 100%;
+            min-width: 100px;
+        }
+        .selectInput .flavorSelect {
+            position: absolute;
+            width: 100%;
+            padding: 0 10px;
+            border-radius: 3px;
+            border: solid 1px #00FA9A;
+            line-height: 30px;
+            text-align: center;
+            background: #fff;
+            top: 50px;
+            z-index: 99;
+        }
+        .selectInput .flavorSelect .items {
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+            line-height: 35px;
+            border-bottom: solid 1px #f4f4f4;
+            color: #666;
+        }
+        .selectInput .flavorSelect .none {
+            font-size: 14px;
+        }
+
+        #notice-add-app .uploadImg .el-form-item__label::before{
+            content: '*';
+            color: #00FA9A;
+            margin-right: 4px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="addBrand-container" id="notice-add-app">
+    <div class="container">
+        <el-form ref="ruleForm" :model="ruleForm" :rules="rules" :inline="true" label-width="180px" class="demo-ruleForm"
+        >
+            <div>
+                <el-form-item label="通知标题:" prop="title">
+                    <el-input v-model="ruleForm.title" placeholder="请填写z通知标题" maxlength="20"/>
+                </el-form-item>
+            </div>
+            <div class="address">
+                <el-form-item label="通知描述:" prop="region">
+                    <el-input v-model="ruleForm.description" type="textarea" :rows="3" placeholder="通知描述，最长200字" maxlength="200"/>
+                </el-form-item>
+            </div>
+
+            <div class="subBox address">
+                <el-form-item>
+                    <el-button @click="goBack()">取消</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+                    <el-button v-if="actionType == 'add'" type="primary" class="continue" @click="submitForm('ruleForm','goAnd')">
+                        保存并继续添加通知
+                    </el-button>
+                </el-form-item>
+            </div>
+        </el-form>
+    </div>
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../../plugins/axios/axios.min.js"></script>
+<script src="../../js/request.js"></script>
+<script src="../../js/validate.js"></script>
+<script src="../../js/index.js"></script>
+<script src="../../api/notice.js"></script>
+<script>
+    const tagsOptions = ['搏击', '瑜伽', '跳舞'];
+    new Vue({
+        el: '#notice-add-app',
+        data() {
+            return {
+                id: '',
+                tableData : [],
+                restKey: 0,
+                textarea: '',
+                value: '',
+                imageUrl: '',
+                actionType: '',
+                index : 0,
+                inputStyle  : {'flex':1},
+                ruleForm  : {
+                    'id': '',
+                    'name': '',
+                    'type':'',
+                    'count':'',
+                    'price': '',
+                    'oldPrice': '',
+                    'image': '',
+                    'tags': [],
+                    'day': '',
+                    'description': '',
+                    'status': true,
+                },
+                options: [{
+                    value: '期限卡',
+                    label: '期限卡'
+                }, {
+                    value: '次卡',
+                    label: '次卡'
+                }],
+                mak: false,
+                checkAll:false,
+                tags: tagsOptions,
+                isIndeterminate: true
+            }
+        },
+        computed: {
+            rules () {
+                return {
+                    'name': [
+                        {'required': true, 'message': '请填写名称', 'trigger': 'blur'}
+                    ],
+                    'price': [
+                        {
+                            'required': true,
+                            validator: (rules, value, callback) => {
+                                if (!value) {
+                                    callback(new Error('请填写价格'))
+                                } else {
+                                    const reg = /^\d+(\.\d{0,2})?$/;
+                                    if (reg.test(value)) {
+                                        if(value < 10000){
+                                            callback()
+                                        }else{
+                                            callback(new Error('价格小于10000'))
+                                        }
+                                    } else {
+                                        callback(new Error('价格格式只能为数字,且最多保留两位小数'))
+                                    }
+                                }
+                            },
+                            'trigger': 'blur'
+                        }
+                    ],
+                }
+            }
+        },
+        created() {
+            //和修改相关
+            this.id = requestUrlParam('id');
+            this.actionType = this.id ? 'edit' : 'add';
+            if (this.id) {
+                this.init()
+            }
+            var _this = this
+            console.log(_this.tags)
+
+        },
+        mounted() {
+        },
+        methods: {
+            async init () {
+                var _this = this
+                // console.log(_this.tags)
+
+                queryNoticeById(this.id).then(res => {
+                    console.log(res);
+                    if (String(res.code) === '1') {
+                        this.ruleForm = { ...res.data };
+                        // for (let i = 0; i <this.tags; i++) {
+                        //     if(checkedtags[i])
+                        // }
+                    } else {
+                        this.$message.error(res.msg || '操作失败')
+                    }
+                })
+
+            },
+
+            submitForm(formName, st) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        let params = {...this.ruleForm};
+                        editNotice(params).then(res => {
+                            if (res.code === 1) {
+                                this.$message.success('通知添加成功！');
+                                if (!st) {
+                                    this.goBack()
+                                } else {
+                                    this.ruleForm = {
+                                        'id': '',
+                                        'title': '',
+                                        'description':'',
+                                        'createTime':''
+                                    }
+                                }
+                            } else {
+                                this.$message.error(res.msg || '操作失败')
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            },
+            handleCheckAllChange(val) {
+                this.ruleForm.tags = val ? tagsOptions : []
+                this.isIndeterminate = false;
+                console.log(val)
+                console.log(this.ruleForm.tags)
+                // this.checkedCities = val ? cityOptions : [];
+                // this.isIndeterminate = false;
+
+            },
+            handleCheckedCitiesChange(value) {
+                let checkedCount = value.length;
+                this.checkAll = checkedCount === this.tags.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < this.tags.length;
+                this.ruleForm.tags = value
+                console.log(value)
+                console.log(this.ruleForm.tags)
+                // let checkedCount = value.length;
+                // this.checkAll = checkedCount === this.cities.length;
+                // this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+            },
+
+            handleAvatarSuccess (response, file, fileList) {
+                // 拼接down接口预览
+                if(response.code === 0 && response.msg === '未登录'){
+                    window.top.location.href = '../login/login.html'
+                }else{
+                    this.imageUrl = `/common/download?name=${response.data}`;
+                    this.ruleForm.image = response.data
+                }
+            },
+
+
+            goBack(){
+                window.parent.menuHandle({
+                    id: '13',
+                    url: '/back/page/notice/list.html',
+                    name: '通知管理'
+                },false)
+            }
+        }
+    })
+</script>
+</body>
+</html>

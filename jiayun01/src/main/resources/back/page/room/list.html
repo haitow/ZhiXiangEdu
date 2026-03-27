@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="../../styles/common.css" />
+    <link rel="stylesheet" href="../../styles/page.css" />
+</head>
+<body>
+<div class="dashboard-container" id="room-app">
+    <div class="container">
+        <div class="tableBar">
+            <el-input v-model="input" placeholder="请输入教室名称" style="width: 250px" clearable @keyup.enter.native="handleQuery">
+                <i slot="prefix" class="el-input__icon el-icon-search" style="cursor: pointer" @click="init"></i>
+            </el-input>
+            <el-button type="primary" icon="el-icon-search" @click="init" style="margin-left: 10px"  >搜索</el-button>
+            <div class="tableLab">
+                <el-button type="primary" @click="addRoomtype('add')">+ 新建教室</el-button>
+            </div>
+        </div>
+        <el-table :data="tableData" stripe class="tableBox" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="25"></el-table-column>
+            <el-table-column prop="name" label="教室名称"></el-table-column>
+            <el-table-column prop="location" label="地点"></el-table-column>
+            <el-table-column prop="people" label="容纳人数"></el-table-column>
+            <el-table-column label="状态">
+                <template slot-scope="scope">
+                    <span style="margin-right: 10px;">{{ scope.row.status == '0' ? '停用' : '启用' }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="updateTime" label="最后操作时间"></el-table-column>
+            <el-table-column label="操作" width="160" align="center">
+                <template slot-scope="scope">
+                    <el-button type="text" size="small" class="blueBug" @click="addRoomtype(scope.row.id)">修改</el-button>
+                    <el-button type="text" size="small" class="blueBug" @click="statusHandle(scope.row)">
+                        {{ scope.row.status == '0' ? '启用' : '停用' }}
+                    </el-button>
+                    <el-button type="text" size="small" class="delBut non" @click="deleteHandle(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-pagination
+                class="pageList"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="counts"
+                @size-change="handleSizeChange"
+                :current-page.sync="page"
+                @current-change="handleCurrentChange"
+        ></el-pagination>
+    </div>
+</div>
+</body>
+<script src="../../plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../../plugins/axios/axios.min.js"></script>
+<script src="../../js/request.js"></script>
+<script src="../../api/room.js"></script>
+<script>
+    new Vue({
+        el: '#room-app',
+        data() {
+            return {
+                input: '',
+                counts: 0,
+                page: 1,
+                pageSize: 10,
+                tableData : [],
+                checkList: [],
+                id : '',
+                status : '',
+            }
+        },
+        computed: {},
+        created() {
+            this.init()
+        },
+        mounted() {
+        },
+        methods: {
+            async init () {
+                const params = {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    name: this.input ? this.input : undefined
+                };
+                await getRoomPage(params).then(res => {
+                    if (String(res.code) === '1') {
+                        this.tableData = res.data.records || [];
+                        this.counts=res.data.total
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            handleQuery() {
+                this.page = 1;
+                this.init();
+            },
+            //状态修改
+            statusHandle (row) {
+                this.id = row.id;
+                this.status = row.status;
+                this.$confirm('确认调整该账号的状态?', '提示', {
+                    'confirmButtonText': '确定',
+                    'cancelButtonText': '取消',
+                    'type': 'warning'
+                }).then(() => {//点击确定执行
+                    // 调用请求方法   0--false----true   1---true---0
+                    //this.status=="0"||this.status==0 ? "1" : "0"
+                    enableOrDisableRoom({ 'id': this.id, 'status':!this.status? 1:0 }).then(res => {//请求结果处理
+                        if (String(res.code) === '1') {
+                            this.$message.success('账号状态更改成功！');
+                            this.handleQuery()
+                        }else{
+                            this.$message.error(res.msg)
+                        }
+                    }).catch(err => {
+                        this.$message.error('请求出错了：' + err)
+                    })
+                })
+            },
+            // 添加
+            addRoomtype (st) {
+                if (st === 'add'){
+                    window.parent.menuHandle({
+                        id: '7',
+                        url: '/back/page/room/add.html',
+                        name: '添加教室'
+                    },true)
+                } else {
+                    window.parent.menuHandle({
+                        id: '7',
+                        url: '/back/page/room/add.html?id='+st,
+                        name: '修改教室'
+                    },true)
+                }
+            },
+            // 全部操作
+            handleSelectionChange (val){
+                let checkArr = [];
+                val.forEach((n) => {
+                    checkArr.push(n.id)
+                });
+                this.checkList = checkArr
+            },
+            handleSizeChange (val) {
+                this.pageSize = val;
+                this.init()
+            },
+            handleCurrentChange (val) {
+                this.page = val;
+                this.init()
+            },
+            deleteHandle(data){
+                console.log(data)
+                if (data.isDeleted=='0'){
+                    this.$confirm('确认删除该教室, 是否继续?', '确定删除', {
+                        'confirmButtonText': '确定',
+                        'cancelButtonText': '取消',
+                    }).then(() => {
+                        deleteRoom(data.id).then(res => {
+                            console.log(res)
+                            if (res.code === 1) {
+                                this.$message.success('删除成功！');
+                                this.handleQuery()
+                            } else {
+                                this.$message.error(res.msg || '操作失败')
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    })
+                }
+
+            },
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>潮汐健身房管理系统</title>
+	<link rel="shortcut icon" href="../../title.jpg">
+	<link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+	<link rel="stylesheet" href="../../styles/icon/iconfont.css" />
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+			position: relative;
+			overflow: hidden;
+		}
+		body::before {
+			content: '';
+			position: absolute;
+			top: -50%;
+			left: -50%;
+			width: 200%;
+			height: 200%;
+			background: 
+				radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+				radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+				radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 30%);
+			animation: bgMove 20s ease-in-out infinite;
+		}
+		@keyframes bgMove {
+			0%, 100% { transform: translate(0, 0) rotate(0deg); }
+			25% { transform: translate(-2%, 2%) rotate(1deg); }
+			50% { transform: translate(2%, -2%) rotate(-1deg); }
+			75% { transform: translate(-1%, -1%) rotate(0.5deg); }
+		}
+		.login-container {
+			display: flex;
+			background: rgba(255, 255, 255, 0.95);
+			border-radius: 24px;
+			overflow: hidden;
+			box-shadow: 
+				0 25px 50px rgba(0, 0, 0, 0.15),
+				0 0 0 1px rgba(255, 255, 255, 0.1);
+			min-height: 500px;
+			position: relative;
+			z-index: 1;
+			backdrop-filter: blur(20px);
+		}
+		.login-left {
+			width: 400px;
+			background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			padding: 60px;
+			position: relative;
+			overflow: hidden;
+		}
+		.login-left::before {
+			content: '';
+			position: absolute;
+			top: -50%;
+			left: -50%;
+			width: 200%;
+			height: 200%;
+			background: 
+				radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+				radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+		}
+		.brand-logo {
+			width: 100px;
+			height: 100px;
+			background: rgba(255, 255, 255, 0.2);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 30px;
+			backdrop-filter: blur(10px);
+			border: 2px solid rgba(255, 255, 255, 0.3);
+			position: relative;
+			z-index: 1;
+		}
+		.brand-logo::after {
+			content: '🌊';
+			font-size: 50px;
+		}
+		.brand-name {
+			font-size: 32px;
+			font-weight: bold;
+			color: #fff;
+			margin-bottom: 12px;
+			letter-spacing: 4px;
+			position: relative;
+			z-index: 1;
+			text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		}
+		.brand-slogan {
+			font-size: 16px;
+			color: rgba(255, 255, 255, 0.9);
+			letter-spacing: 2px;
+			position: relative;
+			z-index: 1;
+		}
+		.brand-features {
+			margin-top: 50px;
+			position: relative;
+			z-index: 1;
+		}
+		.feature-item {
+			display: flex;
+			align-items: center;
+			color: rgba(255, 255, 255, 0.9);
+			margin-bottom: 16px;
+			font-size: 14px;
+		}
+		.feature-item::before {
+			content: '✓';
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 24px;
+			height: 24px;
+			background: rgba(255, 255, 255, 0.2);
+			border-radius: 50%;
+			margin-right: 12px;
+			font-size: 12px;
+		}
+		.login-right {
+			width: 420px;
+			padding: 60px 50px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			background: #fff;
+		}
+		.login-header {
+			margin-bottom: 40px;
+		}
+		.login-header h2 {
+			font-size: 28px;
+			color: #1E293B;
+			font-weight: 700;
+			margin-bottom: 10px;
+		}
+		.login-header span {
+			font-size: 14px;
+			color: #64748B;
+		}
+		.login-form .el-form-item {
+			margin-bottom: 24px;
+		}
+		.login-form .el-input__inner {
+			height: 48px;
+			line-height: 48px;
+			border: 2px solid #E2E8F0;
+			border-radius: 12px;
+			font-size: 15px;
+			transition: all 0.3s;
+		}
+		.login-form .el-input__inner:focus {
+			border-color: #3B82F6;
+			box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+		}
+		.login-form .el-input__prefix {
+			left: 14px;
+			color: #94A3B8;
+			font-size: 18px;
+		}
+		.login-form .el-input--prefix .el-input__inner {
+			padding-left: 44px;
+		}
+		.login-btn {
+			width: 100%;
+			height: 48px;
+			border-radius: 12px;
+			font-size: 16px;
+			font-weight: 600;
+			border: none;
+			background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
+			color: #fff;
+			box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+			transition: all 0.3s;
+		}
+		.login-btn:hover,
+		.login-btn:focus {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
+			background: linear-gradient(135deg, #EA580C 0%, #F97316 100%);
+			color: #fff;
+		}
+		.login-btn:active {
+			transform: translateY(0);
+		}
+		.login-footer {
+			text-align: center;
+			margin-top: 40px;
+		}
+		.login-footer p {
+			font-size: 13px;
+			color: #94A3B8;
+		}
+		.divider {
+			display: flex;
+			align-items: center;
+			margin: 30px 0;
+		}
+		.divider::before,
+		.divider::after {
+			content: '';
+			flex: 1;
+			height: 1px;
+			background: #E2E8F0;
+		}
+		.divider span {
+			padding: 0 16px;
+			color: #94A3B8;
+			font-size: 13px;
+		}
+		.tips {
+			background: #F8FAFC;
+			border-radius: 12px;
+			padding: 16px;
+			margin-top: 20px;
+		}
+		.tips-title {
+			font-size: 13px;
+			color: #64748B;
+			margin-bottom: 8px;
+		}
+		.tips-content {
+			font-size: 12px;
+			color: #94A3B8;
+			line-height: 1.6;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="login-container">
+		<div class="login-left">
+			<div class="brand-logo"></div>
+			<div class="brand-name">潮汐健身房</div>
+			<div class="brand-slogan">Tidal Fitness · 开启健康生活</div>
+			<div class="brand-features">
+				<div class="feature-item">智能课程管理系统</div>
+				<div class="feature-item">会员数据可视化</div>
+				<div class="feature-item">多端数据同步</div>
+			</div>
+		</div>
+		<div class="login-right">
+			<div class="login-header">
+				<h2>欢迎登录</h2>
+				<span>Welcome Back</span>
+			</div>
+			<div id="login-app">
+				<el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
+					<el-form-item prop="username">
+						<el-input v-model="loginForm.username" type="text" placeholder="请输入账号"
+							maxlength="20" prefix-icon="iconfont icon-user" />
+					</el-form-item>
+					<el-form-item prop="password">
+						<el-input v-model="loginForm.password" type="password" placeholder="请输入密码"
+							prefix-icon="iconfont icon-lock" maxlength="20" 
+							@keyup.enter.native="handleLogin" />
+					</el-form-item>
+					<el-form-item>
+						<el-button :loading="loading" class="login-btn" type="primary"
+							@click.native.prevent="handleLogin">
+							<span v-if="!loading">登 录</span>
+							<span v-else>登录中...</span>
+						</el-button>
+					</el-form-item>
+				</el-form>
+				<div class="tips">
+					<div class="tips-title">💡 提示</div>
+					<div class="tips-content">默认账号：admin / 密码：123456</div>
+				</div>
+			</div>
+			<div class="login-footer">
+				<p>© 2024 潮汐科技 All Rights Reserved</p>
+			</div>
+		</div>
+	</div>
+
+	<script src="../../plugins/vue/vue.js"></script>
+	<script src="../../plugins/element-ui/index.js"></script>
+	<script src="../../plugins/axios/axios.min.js"></script>
+	<script src="../../js/request.js"></script>
+	<script src="../../js/validate.js"></script>
+	<script src="../../api/login.js"></script>
+
+	<script>
+		new Vue({
+			el: '#login-app',
+			data() {
+				return {
+					loginForm: {
+						username: 'admin',
+						password: '123456'
+					},
+					loading: false
+				}
+			},
+			computed: {
+				loginRules() {
+					const validateUsername = (rule, value, callback) => {
+						if (value.length < 1) {
+							callback(new Error('请输入用户名'))
+						} else {
+							callback()
+						}
+					};
+					const validatePassword = (rule, value, callback) => {
+						if (value.length < 6) {
+							callback(new Error('密码必须在6位以上'))
+						} else {
+							callback()
+						}
+					};
+					return {
+						'username': [{
+							'validator': validateUsername,
+							'trigger': 'blur'
+						}],
+						'password': [{
+							'validator': validatePassword,
+							'trigger': 'blur'
+						}]
+					}
+				}
+			},
+			methods: {
+				async handleLogin() {
+					this.$refs.loginForm.validate(async (valid) => {
+						if (valid) {
+							this.loading = true;
+							let res = await loginApi(this.loginForm);
+							if (String(res.code) === '1') {
+								window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+								window.location.href = '/back/index.html';
+							} else {
+								this.$message.error(res.msg);
+								this.loading = false;
+							}
+						}
+					})
+				}
+			}
+		})
+	</script>
+</body>
+
+</html>
