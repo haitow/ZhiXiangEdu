@@ -16,6 +16,7 @@ public class SMSSendCode {
 
 
   int dailyCommit1 = 1;
+  int dailyCommit2 = 2;
 
   private static final String ACCESS_KEY_SECRET = System.getenv("temp2env");//秘钥
 
