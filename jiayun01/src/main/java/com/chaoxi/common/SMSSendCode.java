@@ -14,9 +14,14 @@ public class SMSSendCode {
 
   private static final String ACCESS_KEY_ID = System.getenv("temp1env");//秘钥ID
 
+
+  int dailyCommit1 = 1;
+
   private static final String ACCESS_KEY_SECRET = System.getenv("temp2env");//秘钥
 
-  
+
+
+
   private static final String signName= "阿里云短信测试";//短信模板
   private static final String template_Code= "SMS_154950909";//短信签名
   private static final String endpoint="dysmsapi.aliyuncs.com";// 访问的域名 
