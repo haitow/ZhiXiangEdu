@@ -18,7 +18,7 @@ public class SMSSendCode {
   int dailyCommit1 = 1;
   int dailyCommit2 = 2;
   int dailyCommit3 = 3;
-  // int dailyCommit4 = 4;
+  int dailyCommit4 = 4;
   // int dailyCommit5 = 5;
 
 
