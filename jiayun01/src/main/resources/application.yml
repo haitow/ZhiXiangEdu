@@ -13,7 +13,7 @@ spring:
   application:
   name: chaoxi-gym
   datasource:
-    url: jdbc:mysql:///jiayun?useSSL=false
+    url: jdbc:mysql:///jiayun?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 1234

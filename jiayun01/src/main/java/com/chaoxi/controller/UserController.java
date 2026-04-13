@@ -181,6 +181,7 @@ public class UserController {
 //    生成验证码
     Integer code = CodeUtils.generateValidateCode(4);
     log.info("code:{}",code);
+    System.out.println(code);
 //    将验证码存入redis
     redisTemplate.opsForValue().set("code"+phone,
         code,
@@ -217,6 +218,12 @@ public class UserController {
     if (StringUtils.isEmpty(code)){
       return R.error("验证码不能为空");
     }
+//    比对验证码
+    if (!Rcode.toString().equals(code)){
+      return R.error("验证码错误");
+    }
+//    验证通过后删除验证码
+    redisTemplate.delete("code"+phone);
 //    判断类型(会员or老师)
     String type = map.get("type");
     if (StringUtils.isEmpty(type)){
