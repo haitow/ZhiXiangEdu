@@ -10,6 +10,7 @@ public class PathMatcher {
             "/user/sendMsg",
             "/user/login",
             "/admin/login",
+            "/auth/refresh",
             "/alipay/**",
             "/common/download"
     };

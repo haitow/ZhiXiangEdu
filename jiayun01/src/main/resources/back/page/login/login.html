@@ -350,6 +350,8 @@
 							let res = await loginApi(this.loginForm);
 							if (String(res.code) === '1') {
 								window.localStorage.setItem('userInfo', JSON.stringify(res.data));
+								window.localStorage.setItem('accessToken', res.data.accessToken);
+								window.localStorage.setItem('refreshToken', res.data.refreshToken);
 								window.location.href = '/back/index.html';
 							} else {
 								this.$message.error(res.msg);

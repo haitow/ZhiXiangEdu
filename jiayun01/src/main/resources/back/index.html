@@ -231,8 +231,9 @@
           logout() {
             logoutApi().then((res)=>{
               if(res.code === 1){
-                /*从本地栈内移除数据*/
                 localStorage.removeItem('userInfo');
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
                 window.location.href = 'page/login/login.html';
               }
             })

@@ -4,6 +4,7 @@ package com.chaoxi.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chaoxi.common.CodeUtils;
+import com.chaoxi.common.JwtUtils;
 import com.chaoxi.common.R;
 import com.chaoxi.common.RegexUtils;
 import com.chaoxi.pojo.Classes;
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -30,8 +32,11 @@ import java.util.concurrent.TimeUnit;
 public class UserController {
   @Autowired
   private UserService userService;
+  @Autowired
+  private RedisTemplate redisTemplate;
+  @Autowired
+  private JwtUtils jwtUtils;
 
-//  分页查询
   @GetMapping("/page")
   public R page(
       @RequestParam Integer page,
@@ -48,7 +53,6 @@ public class UserController {
     return R.success(userpage);
   }
 
-//  新增老师 管理端
   @PostMapping("/teacher")
   public R saveTeacher(@RequestBody User user){
     user.setType("老师");
@@ -56,12 +60,11 @@ public class UserController {
     return userService.save(user)?R.success("新增成功"):R.error("新增失败");
   }
 
-// 根据id获取用户信息 管理端 用户端
   @GetMapping("/teacher/{id}")
   public R getTeacherById(@PathVariable Long id){
     return R.success(userService.getById(id));
   }
-//修改老师 管理端 用户端
+
   @PutMapping("/teacher")
   public R updateTeacher(@RequestBody User user){
     LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
@@ -70,7 +73,6 @@ public class UserController {
   }
 
 
-//  新增会员 管理端
   @PostMapping("/user")
   public R saveUser(@RequestBody User user){
     user.setType("会员");
@@ -78,12 +80,11 @@ public class UserController {
     return userService.save(user)?R.success("新增成功"):R.error("新增失败");
   }
 
-//  根据id获取会员信息 管理端 用户端
   @GetMapping("/user/{id}")
   public R getUserById(@PathVariable Long id){
     return R.success(userService.getById(id));
   }
-// 修改会员 管理端 用户端
+
   @PutMapping("/student")
   public R updateStudent(@RequestBody User user){
     LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
@@ -91,7 +92,6 @@ public class UserController {
     return userService.update(user,lqw)?R.success("修改成功"):R.error("修改失败");
   }
 
-// 修改老师/会员状态
   @PutMapping("/status")
   public R updateStatus(@RequestBody User user){
     LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
@@ -100,14 +100,12 @@ public class UserController {
     return userService.update(user,lqw)?R.success("修改成功"):R.error("修改失败");
   }
 
-  // 查询老师
   @GetMapping("/teacher")
   public R getTeacherList(){
     LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<>();
     qw.eq(User::getType,"老师");
     qw.orderByDesc(User::getName);
     List<User> list = userService.list(qw);
-    //List<String>
     List<String> names = new ArrayList<>();
     for (User user : list) {
       String name = user.getName();
@@ -116,7 +114,6 @@ public class UserController {
     return R.success(names);
   }
 
-//  根据会员id查询会员已办卡
   @GetMapping("/userCards/{userid}")
   public R getUserCardsByUserId(@PathVariable Long userid){
     List<UserCard> cardList = userService.getUserCardsByUserId(userid);
@@ -146,71 +143,48 @@ public class UserController {
     return R.success(cardList);
   }
 
-//  根据会员id为用户选择卡
   @PostMapping("/user/saveByCardId/{cardid}")
   public R saveUserCardByCardId(@PathVariable Long cardid,@RequestBody User user){
     boolean b = userService.saveUserCardByCardId(cardid,user);
     return b? R.success("添加成功"): R.error("添加失败");
   }
 
-//  根据会员id查询会员所选课程
   @GetMapping("/userClasses/{userId}")
   public R getUserClassByUserId(@PathVariable Long userId){
     List<Classes> list = userService.getUserClassByUserId(userId);
     return R.success(list);
   }
 
-//  根据老师id查询该老师的课程
   @GetMapping("/teacher/classes/{tId}")
   public R getTeacherClassByTeacherId(@PathVariable Long tId){
     List<Classes> list = userService.getTeacherClassByTeacherId(tId);
     return R.success(list);
   }
 
-  @Autowired
-  private RedisTemplate redisTemplate;
-//  小程序短信验证码
   @PostMapping("/sendMsg")
   public R sendMsg(@RequestBody Map<String,String> map){
-//    获取手机号
     String phone = map.get("phone");
-//    判断手机号格式
     if (!RegexUtils.isPhoneNumber(phone)){
       return R.error("手机号格式有误");
     }
-//    生成验证码
     Integer code = CodeUtils.generateValidateCode(4);
     log.info("code:{}",code);
     System.out.println(code);
-//    将验证码存入redis
     redisTemplate.opsForValue().set("code"+phone,
         code,
         1,
         TimeUnit.MINUTES
     );
-//    发送短信
-//    try {
-//      SMSSendCode.sendCode(phone,String.valueOf(code));
-//    } catch (Exception e) {
-//      throw new RuntimeException(e);
-//    }
-
-//  短信发送成功
     return R.success("短信发送成功");
   }
 
-//  小程序登录
   @PostMapping("/login")
   public R login(@RequestBody Map<String,String> map){
-//    获取手机号
     String phone = map.get("phone");
-//    获取验证码
     String code = map.get("code");
-//    校验手机号
     if (!RegexUtils.isPhoneNumber(phone)){
       return R.error("手机格式有误");
     }
-//    校验验证码
     Object Rcode = redisTemplate.opsForValue().get("code"+phone);
     if (StringUtils.isEmpty(Rcode)){
       return R.error("验证码已过期");
@@ -218,26 +192,20 @@ public class UserController {
     if (StringUtils.isEmpty(code)){
       return R.error("验证码不能为空");
     }
-//    比对验证码
     if (!Rcode.toString().equals(code)){
       return R.error("验证码错误");
     }
-//    验证通过后删除验证码
     redisTemplate.delete("code"+phone);
-//    判断类型(会员or老师)
     String type = map.get("type");
     if (StringUtils.isEmpty(type)){
       return R.error("请勾选类型");
     }
-//    从数据库中根据手机号查询用户数据
     LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<>();
     qw.eq(User::getPhone,phone);
     qw.eq(User::getType,type);
     User user = userService.getOne(qw);
-//    如果是会员,则进行注册加登录功能
     if (user == null && type.equals("会员")){
       user = new User();
-//      注册
       user.setImage("a.png");
       user.setType(type);
       user.setPhone(phone);
@@ -250,24 +218,31 @@ public class UserController {
       user.setUpdateUser(2L);
       userService.save(user);
     }else if (user == null && type.equals("老师")){
-//      联系管理员
       R.error("请老师联系管理员");
     }
-//    判断是否禁用
     if (user.getStatus() == 0){
       return R.error("该用户已被禁用");
     }
-//    将登录数据存入redis
+    String accessToken = jwtUtils.generateAccessToken(user.getId(), "user");
+    String refreshToken = jwtUtils.generateRefreshToken(user.getId(), "user");
     redisTemplate.opsForValue().set(
-        "auth"+user.getId(),
-        user.getId(),
+        "refresh:user:"+user.getId(),
+        refreshToken,
         7,
         TimeUnit.DAYS
     );
-    return R.success(user);
+    Map<String, Object> result = new HashMap<>();
+    result.put("accessToken", accessToken);
+    result.put("refreshToken", refreshToken);
+    result.put("id", user.getId());
+    result.put("name", user.getName());
+    result.put("type", user.getType());
+    result.put("phone", user.getPhone());
+    result.put("image", user.getImage());
+    result.put("userType", "user");
+    return R.success(result);
   }
 
-//  根据用户Id和卡的Id查询此人是否拥有此卡
   @GetMapping("/getSelectedCard")
   public R getSelectedCard(@RequestParam Long userId,
                            @RequestParam Long cardId)
@@ -276,7 +251,6 @@ public class UserController {
     return R.success(b);
   }
 
-//  小程序分页查询老师信息
   @GetMapping("/teacher/page")
   public R pageTeacher(Integer page,Integer pageSize,String name){
     Page<User> teacherPage = new Page<>(page, pageSize);
@@ -289,10 +263,4 @@ public class UserController {
     return R.success(teacherPage);
   }
 
-//  //  根据课程Id查询用户信息
-//  @GetMapping("/getUserByClassesId/{classId}")
-//  public R getUserByClassesId(@PathVariable Long classId){
-//    List<UserClass> list = userService.getUserByClassesId(classId);
-//    return R.success(list);
-//  }
 }
