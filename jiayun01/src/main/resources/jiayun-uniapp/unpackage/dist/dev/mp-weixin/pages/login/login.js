@@ -221,6 +221,8 @@ var _default = {
           _this2.$refs.message.open();
           setTimeout(function aa() {
             uni.setStorageSync("auth", res.data.data.id);
+            uni.setStorageSync("accessToken", res.data.data.accessToken);
+            uni.setStorageSync("refreshToken", res.data.data.refreshToken);
             uni.switchTab({
               url: '/pages/index/index'
             });
