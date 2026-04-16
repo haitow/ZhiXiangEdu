@@ -12,7 +12,8 @@ public class PathMatcher {
             "/admin/login",
             "/auth/refresh",
             "/alipay/**",
-            "/common/download"
+            "/common/download",
+            "/common/upload"
     };
     /*采用默认*/
     public static boolean check(String requestURI){

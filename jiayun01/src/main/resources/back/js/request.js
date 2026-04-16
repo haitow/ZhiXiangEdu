@@ -42,6 +42,11 @@
       config.headers['Authorization'] = 'Bearer ' + accessToken
     }
 
+    // 文件上传时不设置 Content-Type，让浏览器自动设置 multipart/form-data
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type']
+    }
+
     if (config.method === 'get' && config.params) {
       let url = config.url + '?';
       for (const propName of Object.keys(config.params)) {
