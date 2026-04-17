@@ -21,6 +21,11 @@ spring:
     redis:
       port: 6379
       host: localhost
+  servlet:
+    multipart:
+      max-file-size: 50MB      # 单个分片最大大小
+      max-request-size: 50MB   # 单次请求最大大小      
+
 
 mybatis-plus:
   configuration:
@@ -64,6 +69,11 @@ spring:
     redis:
       port: 6379
       host: 192.168.138.50
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      
 
 mybatis-plus:
   configuration:
@@ -86,3 +96,5 @@ jwt:
   secret-key: chaoxiGym2024SecretKeyForJwtTokenGenerationAndValidation
   access-token-expiration: 7200000
   refresh-token-expiration: 604800000
+
+

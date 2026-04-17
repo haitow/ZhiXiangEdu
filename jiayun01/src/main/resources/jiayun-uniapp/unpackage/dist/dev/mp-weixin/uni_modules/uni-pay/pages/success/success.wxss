@@ -51,7 +51,7 @@
   width: 40rpx;
   height: 40rpx;
   border-radius: 50%;
-  top: calc(150rpx - 20rpx);
+  top: 130rpx;
   left: -20rpx;
 }
 .info-box .right-circle.data-v-464c8a33 {
@@ -60,7 +60,7 @@
   width: 40rpx;
   height: 40rpx;
   border-radius: 50%;
-  top: calc(150rpx - 20rpx);
+  top: 130rpx;
   right: -20rpx;
 }
 .info-box .info-main.data-v-464c8a33 {
@@ -104,4 +104,3 @@
   height: 100rpx;
   display: block;
 }
-

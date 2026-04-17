@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>资源上传</title>
+  <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+  <link rel="stylesheet" href="../../styles/common.css" />
+  <link rel="stylesheet" href="../../styles/page.css" />
+</head>
+<body>
+<div id="upload-app">
+  <div class="container">
+    <el-form label-width="120px">
+      <el-form-item label="选择文件：">
+        <el-upload
+          ref="upload"
+          action="#"
+          :auto-upload="false"
+          :on-change="handleFileChange"
+          :show-file-list="false"
+          :limit="1">
+          <el-button type="primary">选择文件</el-button>
+        </el-upload>
+        <span v-if="file" style="margin-left:10px">{{ file.name }} ({{ formatSize(file.size) }})</span>
+      </el-form-item>
+
+      <el-form-item label="上传进度：">
+        <el-progress :percentage="uploadPercent" :status="uploadStatus" style="width:400px"></el-progress>
+        <span v-if="uploading" style="margin-left:10px">{{ uploadedChunks }}/{{ totalChunks }} 分片</span>
+      </el-form-item>
+
+      <el-form-item label="MD5校验：">
+        <span v-if="fileMd5">{{ fileMd5 }}</span>
+        <span v-else-if="calculatingMd5">计算中...</span>
+        <span v-else>等待选择文件</span>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" @click="startUpload" :disabled="!file || uploading || calculatingMd5">
+          {{ isResume ? '断点续传' : '开始上传' }}
+        </el-button>
+        <el-button @click="goBack">返回</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</div>
+
+<script src="../../plugins/vue/vue.js"></script>
+<script src="../../plugins/element-ui/index.js"></script>
+<script src="../../plugins/axios/axios.min.js"></script>
+<script src="../../js/request.js"></script>
+<script src="../../js/index.js"></script>
+<script src="../../api/resource.js"></script>
+<script src="../../plugins/spark-md5/spark-md5.min.js"></script>
+<script>
+// ===== SparkMD5 库（需要引入，见下方说明）=====
+// 你需要下载 spark-md5.min.js 放到 plugins/ 目录下
+
+const CHUNK_SIZE = 5 * 1024 * 1024; // 每个分片 5MB
+
+new Vue({
+  el: '#upload-app',
+  data() {
+    return {
+      file: null,
+      fileMd5: '',
+      calculatingMd5: false,
+      uploading: false,
+      uploadPercent: 0,
+      uploadStatus: '',
+      uploadedChunks: 0,
+      totalChunks: 0,
+      isResume: false,
+      uploadedChunkIndices: []
+    }
+  },
+  methods: {
+    // 选择文件后触发
+    handleFileChange(file) {
+      this.file = file.raw;
+      this.fileMd5 = '';
+      this.uploadPercent = 0;
+      this.uploadStatus = '';
+      this.uploadedChunks = 0;
+      this.totalChunks = 0;
+      this.isResume = false;
+      this.calculateMd5();
+    },
+
+    // 计算文件MD5（使用 SparkMD5 增量计算，避免大文件占满内存）
+    async calculateMd5() {
+      this.calculatingMd5 = true;
+      const file = this.file;
+      const chunks = Math.ceil(file.size / CHUNK_SIZE);
+      const spark = new SparkMD5.ArrayBuffer();
+      const reader = new FileReader();
+
+      let currentChunk = 0;
+      reader.onload = (e) => {
+        spark.append(e.target.result);
+        currentChunk++;
+        if (currentChunk < chunks) {
+          loadNext();
+        } else {
+          this.fileMd5 = spark.end();
+          this.calculatingMd5 = false;
+        }
+      };
+
+      const loadNext = () => {
+        const start = currentChunk * CHUNK_SIZE;
+        const end = Math.min(start + CHUNK_SIZE, file.size);
+        reader.readAsArrayBuffer(file.slice(start, end));
+      };
+
+      loadNext();
+    },
+
+    // 开始上传
+    async startUpload() {
+      if (!this.file || !this.fileMd5) return;
+
+      this.totalChunks = Math.ceil(this.file.size / CHUNK_SIZE);
+      this.uploading = true;
+      this.uploadStatus = '';
+
+      // 1. 调用初始化接口
+      const initRes = await initUpload({
+        fileName: this.file.name,
+        fileMd5: this.fileMd5,
+        fileSize: this.file.size,
+        chunkSize: CHUNK_SIZE,
+        chunkCount: this.totalChunks,
+        fileType: this.file.name.split('.').pop()
+      });
+
+      if (initRes.code !== 1) {
+        this.$message.error('初始化上传失败');
+        this.uploading = false;
+        return;
+      }
+
+      // 秒传：文件已存在
+      if (initRes.isInstant) {
+        this.$message.success('秒传成功！文件已存在');
+        this.uploadPercent = 100;
+        this.uploadStatus = 'success';
+        this.uploading = false;
+        return;
+      }
+
+      // 断点续传：获取已上传分片
+      if (initRes.isResume) {
+        const checkRes = await checkChunk(this.fileMd5);
+        if (checkRes.code === 1) {
+          this.uploadedChunkIndices = checkRes.data;
+          this.uploadedChunks = this.uploadedChunkIndices.length;
+          this.uploadPercent = Math.floor((this.uploadedChunks / this.totalChunks) * 100);
+          this.isResume = true;
+        }
+      }
+
+      // 2. 逐个上传未完成的分片
+      for (let i = 0; i < this.totalChunks; i++) {
+        if (this.uploadedChunkIndices.includes(i)) continue; // 跳过已上传的分片
+
+        const start = i * CHUNK_SIZE;
+        const end = Math.min(start + CHUNK_SIZE, this.file.size);
+        const chunkBlob = this.file.slice(start, end);
+
+        const formData = new FormData();
+        formData.append('file', chunkBlob);
+        formData.append('md5', this.fileMd5);
+        formData.append('chunkIndex', i);
+
+        try {
+          await uploadChunk(formData);
+          this.uploadedChunks++;
+          this.uploadPercent = Math.floor((this.uploadedChunks / this.totalChunks) * 100);
+        } catch (err) {
+          this.$message.error(`分片 ${i} 上传失败`);
+          this.uploadStatus = 'exception';
+          this.uploading = false;
+          return;
+        }
+      }
+
+      // 3. 所有分片上传完毕，调用合并接口
+      const mergeRes = await mergeChunk(this.fileMd5);
+      if (mergeRes.code === 1) {
+        this.$message.success('文件上传合并成功！');
+        this.uploadStatus = 'success';
+      } else {
+        this.$message.error('文件合并失败');
+        this.uploadStatus = 'exception';
+      }
+      this.uploading = false;
+    },
+
+    formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+      if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+    },
+
+    goBack() {
+      window.parent.menuHandle({
+        id: '14',
+        name: '资源管理',
+        url: 'page/resource/list.html'
+      }, false);
+    }
+  }
+});
+</script>
+</body>
+</html>

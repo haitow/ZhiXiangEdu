@@ -13,7 +13,13 @@ public class PathMatcher {
             "/auth/refresh",
             "/alipay/**",
             "/common/download",
-            "/common/upload"
+            "/common/upload",
+            "/resource/initUpload",
+            "/resource/uploadChunk",
+            "/resource/checkChunk",
+            "/resource/merge",
+            "/resource/page",
+            "/resource/download/**"
     };
     /*采用默认*/
     public static boolean check(String requestURI){

@@ -4,6 +4,7 @@ import io.minio.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.DeleteObject;
+import io.minio.ComposeSource;
 import io.minio.messages.Item;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -352,5 +353,70 @@ public class MinioUtils {
   public String getUtf8ByURLDecoder(String str) throws UnsupportedEncodingException {
     String url = str.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
     return URLDecoder.decode(url, "UTF-8");
+  }
+
+
+
+//上传分片
+  public void uploadChunk(
+    String bucketName, 
+    String objectName, 
+    InputStream inputStream, 
+    long size) 
+  {
+    try {
+      minioClient.putObject(
+      PutObjectArgs
+      .builder()
+      .bucket(bucketName)
+      .object(objectName)
+      .stream(inputStream, size, -1)
+      .build()
+      );
+    } catch (Exception e) {
+      log.error("上传分片失败: {}", objectName, e);
+        throw new RuntimeException("上传分片失败", e);
+    }
+  }
+
+  //合并分片
+  public void mergeChunks(String bucketName, String chunkPrefix, int chunkCount, String targetObjectName) {
+    try {
+        List<ComposeSource> sources = new ArrayList<>();
+        for (int i = 0; i < chunkCount; i++) {
+            sources.add(
+                ComposeSource.builder()
+                    .bucket(bucketName)
+                    .object(chunkPrefix + "/" + i)
+                    .build()
+            );
+        }
+        minioClient.composeObject(
+            ComposeObjectArgs.builder()
+                .bucket(bucketName)
+                .object(targetObjectName)
+                .sources(sources)
+                .build()
+        );
+    } catch (Exception e) {
+        log.error("合并分片失败: {}", targetObjectName, e);
+        throw new RuntimeException("合并分片失败", e);
+    }
+  }
+
+  //清理分片临时文件
+  public void cleanChunks(String bucketName, String chunkPrefix, int chunkCount) {
+    for (int i = 0; i < chunkCount; i++) {
+        try {
+            minioClient.removeObject(
+                RemoveObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(chunkPrefix + "/" + i)
+                    .build()
+            );
+        } catch (Exception e) {
+            log.warn("清理分片失败: {}/{}", chunkPrefix, i);
+        }
+    }
   }
 }
