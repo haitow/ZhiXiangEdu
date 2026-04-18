@@ -19,7 +19,7 @@ public class SMSSendCode {
   int dailyCommit2 = 2;
   int dailyCommit3 = 3;
   int dailyCommit4 = 4;
-  // int dailyCommit5 = 5;
+  int dailyCommit5 = 5;
 
 
   private static final String ACCESS_KEY_SECRET = System.getenv("temp2env");//秘钥
