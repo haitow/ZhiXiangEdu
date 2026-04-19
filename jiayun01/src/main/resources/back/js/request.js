@@ -1,7 +1,7 @@
 (function (win) {
   axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
   const service = axios.create({
-    baseURL: 'http://localhost:8082',
+    baseURL: '',
     timeout: 1000000
   })
 
@@ -94,7 +94,7 @@
           return Promise.reject(res.data)
         }
 
-        return axios.post('http://localhost:8082/auth/refresh', {
+        return axios.post('/auth/refresh', {
           refreshToken: refreshToken
         }).then(response => {
           if (response.data.code == 1) {
