@@ -100,6 +100,7 @@ public class ResourceController {
     }
 
     // ========== 接口3：检查分片是否已上传（断点续传核心） ==========
+    // sfhjf
     @GetMapping("/checkChunk")
     public R checkChunk(@RequestParam("md5") String md5) {
         LambdaQueryWrapper<Resource> qw = new LambdaQueryWrapper<>();
