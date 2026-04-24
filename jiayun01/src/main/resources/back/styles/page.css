@@ -98,15 +98,19 @@
   width: 777px;
 }
 .flavorBox .addBut {
-  background: #00FA9A;
+  background: #ffffff;
   display: inline-block;
   padding: 0px 20px;
-  border-radius: 3px;
+  border-radius: 6px;
   line-height: 40px;
   cursor: pointer;
-  border-radius: 4px;
-  color: #333333;
+  color: #0EB83A;
   font-weight: 500;
+  border: 1px solid #0EB83A;
+}
+.flavorBox .addBut:hover {
+  background: #0EB83A;
+  color: #ffffff;
 }
 .flavorBox .flavor {
   border: solid 1px #dfe2e8;
@@ -143,14 +147,14 @@
 }
 .flavorBox .flavor .cont .items .labItems span {
   display: inline-block;
-  color: #00FA9A;
+  color: #0EB83A;
   margin: 5px;
   line-height: 26px;
   height: 26px;
   padding: 0 10px;
-  background: #fdf4eb;
+  background: #ffffff;
   border-radius: 3px;
-  border: solid 1px #fae2cd;
+  border: 1px solid #0EB83A;
 }
 .flavorBox .flavor .cont .items .labItems span i {
   cursor: pointer;
@@ -166,7 +170,7 @@
 .flavorBox .flavor .cont .items .delFlavor {
   display: inline-block;
   padding: 0 10px;
-  color: #00FA9A;
+  color: #0EB83A;
   cursor: pointer;
 }
 
@@ -188,4 +192,150 @@
 .el-table--border td:first-child .cell,
 .el-table--border th:first-child .cell {
   padding-left: 12px;
+}
+
+/* 按钮样式覆盖 - 白色背景 + #0EB83A边框 */
+.el-button--primary {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--primary:focus,
+.el-button--primary:hover {
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+.el-button--primary:active {
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+  color: #ffffff !important;
+}
+.el-button--primary.is-plain {
+  color: #0EB83A !important;
+  background: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--primary.is-plain:focus,
+.el-button--primary.is-plain:hover {
+  background: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+
+.el-button--success {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--success:focus,
+.el-button--success:hover {
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+.el-button--success:active {
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+  color: #ffffff !important;
+}
+.el-button--success.is-plain {
+  color: #0EB83A !important;
+  background: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--success.is-plain:focus,
+.el-button--success.is-plain:hover {
+  background: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+
+.el-button--warning {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--warning:focus,
+.el-button--warning:hover {
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+.el-button--warning:active {
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+  color: #ffffff !important;
+}
+.el-button--warning.is-plain {
+  color: #0EB83A !important;
+  background: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--warning.is-plain:focus,
+.el-button--warning.is-plain:hover {
+  background: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+
+.el-button--danger {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--danger:focus,
+.el-button--danger:hover {
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+.el-button--danger:active {
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+  color: #ffffff !important;
+}
+.el-button--danger.is-plain {
+  color: #0EB83A !important;
+  background: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--danger.is-plain:focus,
+.el-button--danger.is-plain:hover {
+  background: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+
+.el-button--info {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--info:focus,
+.el-button--info:hover {
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+.el-button--info:active {
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+  color: #ffffff !important;
+}
+.el-button--info.is-plain {
+  color: #0EB83A !important;
+  background: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+.el-button--info.is-plain:focus,
+.el-button--info.is-plain:hover {
+  background: #0EB83A !important;
+  border-color: #0EB83A !important;
+  color: #ffffff !important;
+}
+
+.el-button {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
 }

@@ -29,6 +29,10 @@ public class Admin implements Serializable {
   private String idNumber;
   /** 状态 0:禁用，1:正常 */
   private Integer status;
+  /** 密保问题 */
+  private String securityQuestion;
+  /** 密保答案 */
+  private String securityAnswer;
   //创建时间
   @TableField(fill = FieldFill.INSERT)
   private LocalDateTime createTime;

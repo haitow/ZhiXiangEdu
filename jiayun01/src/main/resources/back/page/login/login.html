@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>潮汐健身房管理系统</title>
+	<title>智享云学 - 在线教育培训平台</title>
 	<link rel="shortcut icon" href="../../title.jpg">
 	<link rel="stylesheet" href="../../plugins/element-ui/index.css" />
 	<link rel="stylesheet" href="../../styles/icon/iconfont.css" />
@@ -21,229 +21,143 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+			background: url('../../back.png') no-repeat center center;
+			background-size: cover;
 			position: relative;
 			overflow: hidden;
 		}
 		body::before {
 			content: '';
 			position: absolute;
-			top: -50%;
-			left: -50%;
-			width: 200%;
-			height: 200%;
-			background: 
-				radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-				radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-				radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 30%);
-			animation: bgMove 20s ease-in-out infinite;
-		}
-		@keyframes bgMove {
-			0%, 100% { transform: translate(0, 0) rotate(0deg); }
-			25% { transform: translate(-2%, 2%) rotate(1deg); }
-			50% { transform: translate(2%, -2%) rotate(-1deg); }
-			75% { transform: translate(-1%, -1%) rotate(0.5deg); }
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.2);
 		}
 		.login-container {
 			display: flex;
 			background: rgba(255, 255, 255, 0.95);
-			border-radius: 24px;
+			border-radius: 12px;
 			overflow: hidden;
-			box-shadow: 
-				0 25px 50px rgba(0, 0, 0, 0.15),
-				0 0 0 1px rgba(255, 255, 255, 0.1);
-			min-height: 500px;
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+			width: 800px;
+			min-height: 450px;
 			position: relative;
 			z-index: 1;
-			backdrop-filter: blur(20px);
 		}
 		.login-left {
-			width: 400px;
-			background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+			width: 350px;
+			background: url('../../back.png') no-repeat center center;
+			background-size: cover;
 			display: flex;
 			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			padding: 60px;
+			justify-content: flex-end;
+			padding: 40px;
 			position: relative;
-			overflow: hidden;
 		}
 		.login-left::before {
 			content: '';
 			position: absolute;
-			top: -50%;
-			left: -50%;
-			width: 200%;
-			height: 200%;
-			background: 
-				radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-				radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
 		}
-		.brand-logo {
-			width: 100px;
-			height: 100px;
-			background: rgba(255, 255, 255, 0.2);
-			border-radius: 50%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-bottom: 30px;
-			backdrop-filter: blur(10px);
-			border: 2px solid rgba(255, 255, 255, 0.3);
+		.brand-info {
 			position: relative;
 			z-index: 1;
-		}
-		.brand-logo::after {
-			content: '🌊';
-			font-size: 50px;
 		}
 		.brand-name {
-			font-size: 32px;
+			font-size: 24px;
 			font-weight: bold;
 			color: #fff;
-			margin-bottom: 12px;
-			letter-spacing: 4px;
-			position: relative;
-			z-index: 1;
-			text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			margin-bottom: 8px;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		}
 		.brand-slogan {
-			font-size: 16px;
-			color: rgba(255, 255, 255, 0.9);
-			letter-spacing: 2px;
-			position: relative;
-			z-index: 1;
-		}
-		.brand-features {
-			margin-top: 50px;
-			position: relative;
-			z-index: 1;
-		}
-		.feature-item {
-			display: flex;
-			align-items: center;
-			color: rgba(255, 255, 255, 0.9);
-			margin-bottom: 16px;
 			font-size: 14px;
-		}
-		.feature-item::before {
-			content: '✓';
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			width: 24px;
-			height: 24px;
-			background: rgba(255, 255, 255, 0.2);
-			border-radius: 50%;
-			margin-right: 12px;
-			font-size: 12px;
+			color: rgba(255, 255, 255, 0.9);
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 		}
 		.login-right {
-			width: 420px;
-			padding: 60px 50px;
+			flex: 1;
+			padding: 50px 40px;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			background: #fff;
 		}
 		.login-header {
-			margin-bottom: 40px;
+			text-align: center;
+			margin-bottom: 35px;
 		}
 		.login-header h2 {
-			font-size: 28px;
-			color: #1E293B;
-			font-weight: 700;
-			margin-bottom: 10px;
-		}
-		.login-header span {
-			font-size: 14px;
-			color: #64748B;
+			font-size: 22px;
+			color: #333;
+			font-weight: 500;
+			margin-bottom: 5px;
 		}
 		.login-form .el-form-item {
-			margin-bottom: 24px;
+			margin-bottom: 20px;
 		}
 		.login-form .el-input__inner {
-			height: 48px;
-			line-height: 48px;
-			border: 2px solid #E2E8F0;
-			border-radius: 12px;
-			font-size: 15px;
+			height: 42px;
+			line-height: 42px;
+			border: 1px solid #dcdfe6;
+			border-radius: 6px;
+			font-size: 14px;
 			transition: all 0.3s;
 		}
 		.login-form .el-input__inner:focus {
-			border-color: #3B82F6;
-			box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+			border-color: #409eff;
 		}
 		.login-form .el-input__prefix {
-			left: 14px;
-			color: #94A3B8;
-			font-size: 18px;
+			left: 12px;
+			color: #c0c4cc;
+			font-size: 16px;
 		}
 		.login-form .el-input--prefix .el-input__inner {
-			padding-left: 44px;
+			padding-left: 40px;
 		}
 		.login-btn {
 			width: 100%;
-			height: 48px;
-			border-radius: 12px;
-			font-size: 16px;
-			font-weight: 600;
+			height: 42px;
+			border-radius: 6px;
+			font-size: 15px;
+			font-weight: 500;
 			border: none;
-			background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
+			background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
 			color: #fff;
-			box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
 			transition: all 0.3s;
 		}
 		.login-btn:hover,
 		.login-btn:focus {
-			transform: translateY(-2px);
-			box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
-			background: linear-gradient(135deg, #EA580C 0%, #F97316 100%);
+			background: linear-gradient(135deg, #3a8ee6 0%, #409eff 100%);
 			color: #fff;
 		}
-		.login-btn:active {
-			transform: translateY(0);
+		.login-links {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 15px;
+		}
+		.login-links a {
+			color: #409eff;
+			font-size: 13px;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		.login-links a:hover {
+			color: #66b1ff;
 		}
 		.login-footer {
 			text-align: center;
-			margin-top: 40px;
+			margin-top: 30px;
 		}
 		.login-footer p {
-			font-size: 13px;
-			color: #94A3B8;
-		}
-		.divider {
-			display: flex;
-			align-items: center;
-			margin: 30px 0;
-		}
-		.divider::before,
-		.divider::after {
-			content: '';
-			flex: 1;
-			height: 1px;
-			background: #E2E8F0;
-		}
-		.divider span {
-			padding: 0 16px;
-			color: #94A3B8;
-			font-size: 13px;
-		}
-		.tips {
-			background: #F8FAFC;
-			border-radius: 12px;
-			padding: 16px;
-			margin-top: 20px;
-		}
-		.tips-title {
-			font-size: 13px;
-			color: #64748B;
-			margin-bottom: 8px;
-		}
-		.tips-content {
 			font-size: 12px;
-			color: #94A3B8;
-			line-height: 1.6;
+			color: #999;
 		}
 	</style>
 </head>
@@ -251,19 +165,14 @@
 <body>
 	<div class="login-container">
 		<div class="login-left">
-			<div class="brand-logo"></div>
-			<div class="brand-name">潮汐健身房</div>
-			<div class="brand-slogan">Tidal Fitness · 开启健康生活</div>
-			<div class="brand-features">
-				<div class="feature-item">智能课程管理系统</div>
-				<div class="feature-item">会员数据可视化</div>
-				<div class="feature-item">多端数据同步</div>
+			<div class="brand-info">
+				<div class="brand-name">智享云学</div>
+				<div class="brand-slogan">让优质教育资源触手可及</div>
 			</div>
 		</div>
 		<div class="login-right">
 			<div class="login-header">
 				<h2>欢迎登录</h2>
-				<span>Welcome Back</span>
 			</div>
 			<div id="login-app">
 				<el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
@@ -279,18 +188,18 @@
 					<el-form-item>
 						<el-button :loading="loading" class="login-btn" type="primary"
 							@click.native.prevent="handleLogin">
-							<span v-if="!loading">登 录</span>
+							<span v-if="!loading">马上登录</span>
 							<span v-else>登录中...</span>
 						</el-button>
 					</el-form-item>
 				</el-form>
-				<div class="tips">
-					<div class="tips-title">💡 提示</div>
-					<div class="tips-content">默认账号：admin / 密码：123456</div>
+				<div class="login-links">
+					<a @click="goRegister">注册</a>
+					<a @click="goForgotPassword">忘记密码？</a>
 				</div>
 			</div>
 			<div class="login-footer">
-				<p>© 2024 潮汐科技 All Rights Reserved</p>
+				<p>© 2024 智享云学 All Rights Reserved</p>
 			</div>
 		</div>
 	</div>
@@ -359,6 +268,12 @@
 							}
 						}
 					})
+				},
+				goRegister() {
+					window.location.href = 'register.html';
+				},
+				goForgotPassword() {
+					window.location.href = 'forgot-password.html';
 				}
 			}
 		})

@@ -132,4 +132,62 @@ public class AdminController {
     return R.success(list);
   }
 
+  @PostMapping("/register")
+  public R register(@RequestBody Admin admin){
+    log.info("注册数据：{}",admin);
+    LambdaQueryWrapper<Admin> qw = new LambdaQueryWrapper<>();
+    qw.eq(Admin::getUsername, admin.getUsername());
+    Admin existAdmin = adminService.getOne(qw);
+    if (existAdmin != null){
+      return R.error("用户名已存在");
+    }
+    admin.setStatus(1);
+    admin.setPassword(MD5.create().digestHex(admin.getPassword()));
+    boolean b = adminService.save(admin);
+    return b?R.success("注册成功"):R.error("注册失败");
+  }
+
+  @GetMapping("/security/question")
+  public R getSecurityQuestion(@RequestParam String username){
+    LambdaQueryWrapper<Admin> qw = new LambdaQueryWrapper<>();
+    qw.eq(Admin::getUsername, username);
+    Admin admin = adminService.getOne(qw);
+    if (admin == null){
+      return R.error("用户不存在");
+    }
+    if (StringUtils.isEmpty(admin.getSecurityQuestion())){
+      return R.error("该用户未设置密保问题");
+    }
+    return R.success(admin.getSecurityQuestion());
+  }
+
+  @PostMapping("/security/verify")
+  public R verifySecurityAnswer(@RequestBody Map<String, String> body){
+    String username = body.get("username");
+    String securityAnswer = body.get("securityAnswer");
+    LambdaQueryWrapper<Admin> qw = new LambdaQueryWrapper<>();
+    qw.eq(Admin::getUsername, username);
+    Admin admin = adminService.getOne(qw);
+    if (admin == null){
+      return R.error("用户不存在");
+    }
+    if (StringUtils.isEmpty(admin.getSecurityAnswer()) || !admin.getSecurityAnswer().equals(securityAnswer)){
+      return R.error("密保答案错误");
+    }
+    return R.success(admin.getId());
+  }
+
+  @PostMapping("/password/reset")
+  public R resetPassword(@RequestBody Map<String, Object> body){
+    Long userId = Long.valueOf(body.get("userId").toString());
+    String newPassword = body.get("newPassword").toString();
+    Admin admin = adminService.getById(userId);
+    if (admin == null){
+      return R.error("用户不存在");
+    }
+    admin.setPassword(MD5.create().digestHex(newPassword));
+    boolean b = adminService.updateById(admin);
+    return b?R.success("密码重置成功"):R.error("密码重置失败");
+  }
+
 }

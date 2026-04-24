@@ -32,8 +32,9 @@
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+  border-right: 1px solid #f0f0f0;
 }
 
 .hideSidebar .main-container {
@@ -222,33 +223,18 @@
 
 .logo {
   text-align: center;
-  background: #6366F1;
+  background: #ffffff;
   padding: 24px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-}
-
-.logo-icon {
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.logo-icon::after {
-  content: '🌊';
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .logo-text {
-  color: #fff;
-  font-size: 18px;
-  font-weight: 600;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 700;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
   letter-spacing: 1px;
 }
@@ -269,7 +255,7 @@
 }
 
 .el-submenu.is-active > .el-submenu__title {
-  color: #fff !important;
+  color: #0EB83A !important;
 }
 
 .el-submenu > .el-submenu__title,
@@ -279,41 +265,40 @@
 }
 
 .el-menu .el-menu-item {
-  color: #94A3B8;
+  color: #000000;
   height: 48px;
   line-height: 48px;
   margin: 4px 12px;
-  border-radius: 12px !important;
-  transition: all 0.3s;
+  border-radius: 8px !important;
+  transition: color 0.3s;
 }
 
 .el-menu .el-menu-item:hover {
-  color: #fff !important;
-  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #0EB83A !important;
+  background-color: transparent !important;
 }
 
 .el-menu .el-menu-item:hover span {
-  color: #fff !important;
+  color: #0EB83A !important;
 }
 
 .el-menu .el-menu-item:active {
-  color: #1E293B !important;
+  color: #0EB83A !important;
   background-color: transparent !important;
 }
 
 .el-menu .el-menu-item:active span {
-  color: #1E293B !important;
+  color: #0EB83A !important;
 }
 
 .el-menu .el-menu-item.is-active {
-  background: #6366F1 !important;
-  color: #fff !important;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+  background: transparent !important;
+  color: #0EB83A !important;
 }
 
 .el-menu .el-menu-item.is-active span {
-  color: #fff !important;
-  font-weight: 500 !important;
+  color: #0EB83A !important;
+  font-weight: normal !important;
 }
 
 .el-menu-item i {
@@ -326,12 +311,16 @@
   font-size: 15px !important;
   position: relative;
   z-index: 9;
-  color: #94A3B8 !important;
+  color: #000000 !important;
 }
 
 .el-submenu__title:hover {
-  color: #fff !important;
-  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #0EB83A !important;
+  background-color: transparent !important;
+}
+
+.el-submenu.is-active > .el-submenu__title {
+  color: #0EB83A !important;
 }
 
 .el-submenu__title svg {
@@ -363,13 +352,136 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: #F1F5F9;
-  border-radius: 24px;
+  background: #ffffff;
   font-weight: 500;
   color: #1E293B;
 }
 
 .avatar-wrapper::before {
-  content: '👤';
-  font-size: 18px;
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230EB83A'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.el-button--primary {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--primary:focus,
+.el-button--primary:hover {
+  color: #ffffff !important;
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--primary:active {
+  color: #ffffff !important;
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+}
+
+.el-button--success {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--success:focus,
+.el-button--success:hover {
+  color: #ffffff !important;
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--success:active {
+  color: #ffffff !important;
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+}
+
+.el-button--default {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--default:focus,
+.el-button--default:hover {
+  color: #ffffff !important;
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--default:active {
+  color: #ffffff !important;
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+}
+
+.el-button {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+.el-button--warning {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--warning:focus,
+.el-button--warning:hover {
+  color: #ffffff !important;
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--warning:active {
+  color: #ffffff !important;
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+}
+
+.el-button--info {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--info:focus,
+.el-button--info:hover {
+  color: #ffffff !important;
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--info:active {
+  color: #ffffff !important;
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
+}
+
+.el-button--danger {
+  color: #0EB83A !important;
+  background-color: #ffffff !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--danger:focus,
+.el-button--danger:hover {
+  color: #ffffff !important;
+  background-color: #0EB83A !important;
+  border-color: #0EB83A !important;
+}
+
+.el-button--danger:active {
+  color: #ffffff !important;
+  background-color: #0a8a2c !important;
+  border-color: #0a8a2c !important;
 }

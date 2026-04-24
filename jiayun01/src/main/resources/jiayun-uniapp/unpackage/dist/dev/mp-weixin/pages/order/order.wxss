@@ -13,7 +13,7 @@ page {
 }
 .header-bg {
   height: 200rpx;
-  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+  background: linear-gradient(135deg, #0EB83A 0%, #0a8a2c 100%);
   border-radius: 0 0 40rpx 40rpx;
 }
 .header-content {
@@ -49,7 +49,7 @@ page {
 }
 .search-btn {
   padding: 12rpx 32rpx;
-  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+  background: linear-gradient(135deg, #0EB83A 0%, #0a8a2c 100%);
   color: #fff;
   font-size: 26rpx;
   border-radius: 30rpx;
@@ -78,7 +78,7 @@ page {
   color: #F97316;
 }
 .status-completed {
-  color: #10B981;
+  color: #0EB83A;
 }
 .order-content {
   display: flex;
@@ -176,7 +176,7 @@ page {
   color: #fff;
 }
 .comment-btn {
-  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+  background: linear-gradient(135deg, #0EB83A 0%, #0a8a2c 100%);
   color: #fff;
 }
 .empty-state {
@@ -245,7 +245,7 @@ page {
 .rate-text {
   margin-left: 20rpx;
   font-size: 28rpx;
-  color: #3B82F6;
+  color: #0EB83A;
 }
 .popup-footer {
   display: flex;
@@ -263,6 +263,6 @@ page {
   border-right: 1rpx solid #F1F5F9;
 }
 .confirm-btn {
-  color: #3B82F6;
+  color: #0EB83A;
   font-weight: 500;
 }

@@ -221,7 +221,7 @@ var _default = {
     return {
       current: 0,
       styleType: "text",
-      activeColor: "#3B82F6",
+      activeColor: "#0EB83A",
       items: ["已选择"],
       leagueClass: []
     };

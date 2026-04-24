@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>用户注册 - 智享云学</title>
+	<link rel="shortcut icon" href="../../title.jpg">
+	<link rel="stylesheet" href="../../plugins/element-ui/index.css" />
+	<link rel="stylesheet" href="../../styles/icon/iconfont.css" />
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: url('../../back.png') no-repeat center center;
+			background-size: cover;
+			position: relative;
+			overflow: hidden;
+		}
+		body::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.2);
+		}
+		.register-container {
+			display: flex;
+			background: rgba(255, 255, 255, 0.95);
+			border-radius: 12px;
+			overflow: hidden;
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+			width: 800px;
+			min-height: 520px;
+			position: relative;
+			z-index: 1;
+		}
+		.register-left {
+			width: 350px;
+			background: url('../../back.png') no-repeat center center;
+			background-size: cover;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			padding: 40px;
+			position: relative;
+		}
+		.register-left::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+		}
+		.brand-info {
+			position: relative;
+			z-index: 1;
+		}
+		.brand-name {
+			font-size: 24px;
+			font-weight: bold;
+			color: #fff;
+			margin-bottom: 8px;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		}
+		.brand-slogan {
+			font-size: 14px;
+			color: rgba(255, 255, 255, 0.9);
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+		}
+		.register-right {
+			flex: 1;
+			padding: 40px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			background: #fff;
+			overflow-y: auto;
+			max-height: 600px;
+		}
+		.register-header {
+			text-align: center;
+			margin-bottom: 25px;
+		}
+		.register-header h2 {
+			font-size: 22px;
+			color: #333;
+			font-weight: 500;
+			margin-bottom: 5px;
+		}
+		.register-form .el-form-item {
+			margin-bottom: 18px;
+		}
+		.register-form .el-input__inner,
+		.register-form .el-select .el-input__inner {
+			height: 42px;
+			line-height: 42px;
+			border: 1px solid #dcdfe6;
+			border-radius: 6px;
+			font-size: 14px;
+			transition: all 0.3s;
+		}
+		.register-form .el-input__inner:focus,
+		.register-form .el-select .el-input__inner:focus {
+			border-color: #409eff;
+		}
+		.register-form .el-input__prefix {
+			left: 12px;
+			color: #c0c4cc;
+			font-size: 16px;
+		}
+		.register-form .el-input--prefix .el-input__inner {
+			padding-left: 40px;
+		}
+		.register-form .el-radio-group {
+			display: flex;
+			gap: 20px;
+		}
+		.register-form .el-radio {
+			margin-right: 0;
+		}
+		.register-btn {
+			width: 100%;
+			height: 42px;
+			border-radius: 6px;
+			font-size: 15px;
+			font-weight: 500;
+			border: none;
+			background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
+			color: #fff;
+			transition: all 0.3s;
+		}
+		.register-btn:hover,
+		.register-btn:focus {
+			background: linear-gradient(135deg, #3a8ee6 0%, #409eff 100%);
+			color: #fff;
+		}
+		.register-links {
+			text-align: center;
+			margin-top: 15px;
+		}
+		.register-links a {
+			color: #409eff;
+			font-size: 13px;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		.register-links a:hover {
+			color: #66b1ff;
+		}
+		.register-footer {
+			text-align: center;
+			margin-top: 20px;
+		}
+		.register-footer p {
+			font-size: 12px;
+			color: #999;
+		}
+		.section-title {
+			font-size: 14px;
+			color: #666;
+			margin-bottom: 12px;
+			padding-bottom: 8px;
+			border-bottom: 1px solid #eee;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="register-container">
+		<div class="register-left">
+			<div class="brand-info">
+				<div class="brand-name">智享云学</div>
+				<div class="brand-slogan">让优质教育资源触手可及</div>
+			</div>
+		</div>
+		<div class="register-right">
+			<div class="register-header">
+				<h2>用户注册</h2>
+			</div>
+			<div id="register-app">
+				<el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form">
+					<div class="section-title">基本信息</div>
+					<el-form-item prop="name">
+						<el-input v-model="registerForm.name" type="text" placeholder="请输入姓名"
+							maxlength="20" prefix-icon="iconfont icon-user" />
+					</el-form-item>
+					<el-form-item prop="phone">
+						<el-input v-model="registerForm.phone" type="text" placeholder="请输入手机号"
+							maxlength="11" prefix-icon="iconfont icon-phone" />
+					</el-form-item>
+					<el-form-item prop="sex">
+						<el-radio-group v-model="registerForm.sex">
+							<el-radio label="1">男</el-radio>
+							<el-radio label="0">女</el-radio>
+						</el-radio-group>
+					</el-form-item>
+					<el-form-item prop="idNumber">
+						<el-input v-model="registerForm.idNumber" type="text" placeholder="请输入身份证号"
+							maxlength="18" prefix-icon="iconfont icon-idcard" />
+					</el-form-item>
+					<div class="section-title" style="margin-top: 10px;">账号信息</div>
+					<el-form-item prop="username">
+						<el-input v-model="registerForm.username" type="text" placeholder="请输入用户名"
+							maxlength="20" prefix-icon="iconfont icon-user" />
+					</el-form-item>
+					<el-form-item prop="password">
+						<el-input v-model="registerForm.password" type="password" placeholder="请输入密码"
+							prefix-icon="iconfont icon-lock" maxlength="20" />
+					</el-form-item>
+					<el-form-item prop="confirmPassword">
+						<el-input v-model="registerForm.confirmPassword" type="password" placeholder="请确认密码"
+							prefix-icon="iconfont icon-lock" maxlength="20" />
+					</el-form-item>
+					<div class="section-title" style="margin-top: 10px;">密保设置</div>
+					<el-form-item prop="securityQuestion">
+						<el-select v-model="registerForm.securityQuestion" placeholder="请选择密保问题" style="width: 100%;">
+							<el-option label="您的小学名字是什么？" value="您的小学名字是什么？"></el-option>
+							<el-option label="您最喜欢的颜色是什么？" value="您最喜欢的颜色是什么？"></el-option>
+							<el-option label="您的宠物名字是什么？" value="您的宠物名字是什么？"></el-option>
+							<el-option label="您母亲的姓名是什么？" value="您母亲的姓名是什么？"></el-option>
+							<el-option label="您出生的城市是哪里？" value="您出生的城市是哪里？"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item prop="securityAnswer">
+						<el-input v-model="registerForm.securityAnswer" type="text" placeholder="请输入密保答案"
+							maxlength="50" prefix-icon="iconfont icon-answer" />
+					</el-form-item>
+					<el-form-item>
+						<el-button :loading="loading" class="register-btn" type="primary"
+							@click.native.prevent="handleRegister">
+							<span v-if="!loading">立即注册</span>
+							<span v-else>注册中...</span>
+						</el-button>
+					</el-form-item>
+				</el-form>
+				<div class="register-links">
+					<a @click="goLogin">已有账号？立即登录</a>
+				</div>
+			</div>
+			<div class="register-footer">
+				<p>© 2024 智享云学 All Rights Reserved</p>
+			</div>
+		</div>
+	</div>
+
+	<script src="../../plugins/vue/vue.js"></script>
+	<script src="../../plugins/element-ui/index.js"></script>
+	<script src="../../plugins/axios/axios.min.js"></script>
+	<script src="../../js/request.js"></script>
+	<script src="../../js/validate.js"></script>
+	<script src="../../api/login.js"></script>
+
+	<script>
+		new Vue({
+			el: '#register-app',
+			data() {
+				const validateConfirmPassword = (rule, value, callback) => {
+					if (value !== this.registerForm.password) {
+						callback(new Error('两次输入的密码不一致'))
+					} else {
+						callback()
+					}
+				};
+				return {
+					registerForm: {
+						name: '',
+						phone: '',
+						sex: '1',
+						idNumber: '',
+						username: '',
+						password: '',
+						confirmPassword: '',
+						securityQuestion: '',
+						securityAnswer: ''
+					},
+					loading: false,
+					validateConfirmPassword
+				}
+			},
+			computed: {
+				registerRules() {
+					const validateName = (rule, value, callback) => {
+						if (value.length < 1) {
+							callback(new Error('请输入姓名'))
+						} else {
+							callback()
+						}
+					};
+					const validatePhone = (rule, value, callback) => {
+						const phoneReg = /^1[3-9]\d{9}$/;
+						if (value.length < 1) {
+							callback(new Error('请输入手机号'))
+						} else if (!phoneReg.test(value)) {
+							callback(new Error('手机号格式不正确'))
+						} else {
+							callback()
+						}
+					};
+					const validateIdNumber = (rule, value, callback) => {
+						const idReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+						if (value.length < 1) {
+							callback(new Error('请输入身份证号'))
+						} else if (!idReg.test(value)) {
+							callback(new Error('身份证号格式不正确'))
+						} else {
+							callback()
+						}
+					};
+					const validateUsername = (rule, value, callback) => {
+						if (value.length < 1) {
+							callback(new Error('请输入用户名'))
+						} else if (value.length < 3) {
+							callback(new Error('用户名至少3个字符'))
+						} else {
+							callback()
+						}
+					};
+					const validatePassword = (rule, value, callback) => {
+						if (value.length < 6) {
+							callback(new Error('密码至少6位'))
+						} else {
+							callback()
+						}
+					};
+					return {
+						'name': [{
+							'validator': validateName,
+							'trigger': 'blur'
+						}],
+						'phone': [{
+							'validator': validatePhone,
+							'trigger': 'blur'
+						}],
+						'sex': [{
+							'required': true,
+							'message': '请选择性别',
+							'trigger': 'change'
+						}],
+						'idNumber': [{
+							'validator': validateIdNumber,
+							'trigger': 'blur'
+						}],
+						'username': [{
+							'validator': validateUsername,
+							'trigger': 'blur'
+						}],
+						'password': [{
+							'validator': validatePassword,
+							'trigger': 'blur'
+						}],
+						'confirmPassword': [{
+							'validator': this.validateConfirmPassword,
+							'trigger': 'blur'
+						}],
+						'securityQuestion': [{
+							'required': true,
+							'message': '请选择密保问题',
+							'trigger': 'change'
+						}],
+						'securityAnswer': [{
+							'required': true,
+							'message': '请输入密保答案',
+							'trigger': 'blur'
+						}]
+					}
+				}
+			},
+			methods: {
+				async handleRegister() {
+					this.$refs.registerForm.validate(async (valid) => {
+						if (valid) {
+							this.loading = true;
+							let res = await registerApi(this.registerForm);
+							if (String(res.code) === '1') {
+								this.$message.success('注册成功，请登录');
+								setTimeout(() => {
+									window.location.href = 'login.html';
+								}, 1500);
+							} else {
+								this.$message.error(res.msg);
+								this.loading = false;
+							}
+						}
+					})
+				},
+				goLogin() {
+					window.location.href = 'login.html';
+				}
+			}
+		})
+	</script>
+</body>
+
+</html>
