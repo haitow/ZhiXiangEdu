@@ -8,7 +8,7 @@ page {
   min-height: 100vh;
 }
 .header {
-  background: linear-gradient(135deg, #0EB83A 0%, #0a8a2c 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
   padding: 0 30rpx 40rpx;
   padding-top: calc(25px + 40rpx);
 }
@@ -35,7 +35,7 @@ page {
 .banner {
   border-radius: 20rpx;
   overflow: hidden;
-  box-shadow: 0 8rpx 32rpx rgba(14, 184, 58, 0.15);
+  box-shadow: 0 8rpx 32rpx rgba(59, 130, 246, 0.15);
 }
 .swiper-box {
   height: 300rpx;
@@ -71,7 +71,7 @@ page {
 .service-icon {
   width: 88rpx;
   height: 88rpx;
-  background: linear-gradient(135deg, #f0f9f2 0%, #d1f0d9 100%);
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
   border-radius: 24rpx;
   display: flex;
   align-items: center;
@@ -112,7 +112,7 @@ page {
 .title-line {
   width: 6rpx;
   height: 28rpx;
-  background: linear-gradient(180deg, #0EB83A 0%, #0a8a2c 100%);
+  background: linear-gradient(180deg, #3B82F6 0%, #10B981 100%);
   border-radius: 3rpx;
   margin-left: 16rpx;
 }
@@ -120,7 +120,7 @@ page {
   display: flex;
   align-items: center;
   font-size: 26rpx;
-  color: #0EB83A;
+  color: #3B82F6;
   font-weight: 500;
 }
 .more-arrow {
@@ -144,7 +144,7 @@ page {
   height: 120rpx;
   border-radius: 50%;
   margin-bottom: 16rpx;
-  border: 4rpx solid #f0f9f2;
+  border: 4rpx solid #EFF6FF;
 }
 .teacher-name {
   font-size: 26rpx;

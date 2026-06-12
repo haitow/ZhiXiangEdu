@@ -30,7 +30,7 @@ page {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(14, 184, 58, 0.7) 0%, rgba(10, 138, 44, 0.7) 100%);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.7) 0%, rgba(16, 185, 129, 0.7) 100%);
 }
 .header-content {
   position: relative;
@@ -89,7 +89,7 @@ page {
 .card-line {
   flex: 1;
   height: 4rpx;
-  background: linear-gradient(90deg, #0EB83A 0%, #0a8a2c 100%);
+  background: linear-gradient(90deg, #3B82F6 0%, #10B981 100%);
   margin-left: 16rpx;
   border-radius: 2rpx;
 }

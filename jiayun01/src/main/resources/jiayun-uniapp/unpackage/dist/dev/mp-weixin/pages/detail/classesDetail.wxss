@@ -13,7 +13,7 @@ page {
 }
 .header-bg {
   height: 200rpx;
-  background: linear-gradient(135deg, #0EB83A 0%, #0a8a2c 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
 }
 .header-content {
   position: relative;
@@ -50,7 +50,7 @@ page {
   position: relative;
   border-radius: 24rpx;
   overflow: hidden;
-  box-shadow: 0 8rpx 32rpx rgba(14, 184, 58, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(59, 130, 246, 0.2);
   margin-bottom: 24rpx;
 }
 .class-image {
@@ -74,7 +74,7 @@ page {
 .class-tags {
   display: inline-block;
   padding: 8rpx 20rpx;
-  background: linear-gradient(135deg, #0EB83A 0%, #0a8a2c 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
   border-radius: 8rpx;
   font-size: 24rpx;
   color: #fff;
@@ -104,7 +104,7 @@ page {
 .title-line {
   width: 6rpx;
   height: 28rpx;
-  background: linear-gradient(180deg, #0EB83A 0%, #0a8a2c 100%);
+  background: linear-gradient(180deg, #3B82F6 0%, #10B981 100%);
   border-radius: 3rpx;
   margin-left: 16rpx;
 }
@@ -136,10 +136,10 @@ page {
   color: #fff;
 }
 .info-icon.teacher {
-  background: linear-gradient(135deg, #0EB83A 0%, #0a8a2c 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
 }
 .info-icon.room {
-  background: linear-gradient(135deg, #0a8a2c 0%, #076d22 100%);
+  background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
 }
 .info-icon.time {
   background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);

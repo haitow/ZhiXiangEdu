@@ -219,7 +219,7 @@ var _default = {
     return {
       current: 0,
       styleType: "text",
-      activeColor: "#0EB83A",
+      activeColor: "#3B82F6",
       items: ["可使用"],
       cardAll: [],
       stored: []
