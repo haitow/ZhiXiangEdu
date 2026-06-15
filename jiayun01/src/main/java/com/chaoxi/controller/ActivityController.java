@@ -25,6 +25,8 @@ public class ActivityController {
 
 
 
+
+
 //  分页查询
   @GetMapping("/page")
   public R page(Integer page,Integer pageSize,String name){
