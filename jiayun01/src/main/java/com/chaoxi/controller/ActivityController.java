@@ -24,10 +24,6 @@ public class ActivityController {
   private ActivityService activityService;
 
 
-
-
-
-
 //  分页查询
   @GetMapping("/page")
   public R page(Integer page,Integer pageSize,String name){
